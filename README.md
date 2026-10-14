@@ -2,7 +2,7 @@
 
 # Exercise 3.16 – Quy trình bồi thường thiệt hại
 
-## 1. Đề bài (Problem Statement)
+## 1. Đề bài
 
 **Exercise 3.16** Model the control flow of the following business process for damage compensation.
 
@@ -25,15 +25,15 @@ Mô hình hóa luồng kiểm soát (control flow) của quy trình yêu cầu b
 | **Allocate hearing date** | Bố trí lịch xét xử, hoàn tất thủ tục và kết thúc quy trình.
 
 **2.3. Định hướng mô hình hóa**
-Sử dụng Sequence Flow và Exclusive Gateway (X) để kiểm soát chặt chẽ đường đi của quy trình theo các điều kiện logic.
+Sử dụng Sequence Flow và Exclusive Gateway để kiểm soát chặt chẽ đường đi của quy trình theo các điều kiện logic.
 
-* Tạo **vòng lặp (Loop)** cho nhánh nợ phí: Nhánh "Fees not paid" sau khi đi qua tác vụ "Produce fees notice" và "Receive payment" phải được điều hướng quay ngược trở lại Gateway hội tụ nằm trước bước "Check request". Cấu trúc này đảm bảo hồ sơ phải được đánh giá lại tính hợp lệ sau khi hoàn tất đóng tiền.
-
-
-* Sử dụng **cổng rẽ nhánh loại trừ (Exclusive Gateway)** để phân tách luồng: Đảm bảo tại điểm kiểm tra phí, quy trình chỉ đi theo một trong hai hướng duy nhất là "Fees paid" hoặc "Fees not paid".
+* Tạo **vòng lặp** cho nhánh nợ phí: Nhánh "Fees not paid" sau khi đi qua tác vụ "Produce fees notice" và "Receive payment" phải được điều hướng quay ngược trở lại Gateway hội tụ nằm trước bước "Check request". Cấu trúc này đảm bảo hồ sơ phải được đánh giá lại tính hợp lệ sau khi hoàn tất đóng tiền.
 
 
-* Sử dụng **cổng hội tụ (Merge)**: Gộp nhánh có cấp biên lai phụ phí và nhánh không cần cấp biên lai lại với nhau trước khi đi đến bước chốt cuối cùng là "Allocate hearing date".
+* Sử dụng **cổng rẽ nhánh loại trừ** để phân tách luồng: Đảm bảo tại điểm kiểm tra phí, quy trình chỉ đi theo một trong hai hướng duy nhất là "Fees paid" hoặc "Fees not paid".
+
+
+* Sử dụng **cổng hội tụ**: Gộp nhánh có cấp biên lai phụ phí và nhánh không cần cấp biên lai lại với nhau trước khi đi đến bước chốt cuối cùng là "Allocate hearing date".
 
 **2.5. Bảng quy tắc nghiệp vụ**
 
@@ -53,10 +53,10 @@ Sử dụng Sequence Flow và Exclusive Gateway (X) để kiểm soát chặt ch
 Luồng quy trình được thiết kế theo 5 giai đoạn liên kết chặt chẽ với logic rẽ nhánh có điều kiện:
 
 * **Giai đoạn Tiếp nhận & Kiểm tra:** Xử lý đầu vào thông qua việc tiếp nhận yêu cầu, truy xuất hồ sơ gốc và xác minh mức độ phù hợp của dữ liệu.
-* **Giai đoạn Rẽ nhánh chi phí (Routing):** Logic cốt lõi được kiểm soát bằng cổng rẽ nhánh độc quyền (Exclusive Gateway). Các nhánh (Đủ phí / Thiếu phí / Có phụ phí) là các tùy chọn loại trừ lẫn nhau, đòi hỏi phải gán điều kiện luồng (Sequence Flow Conditions) rõ ràng để minh bạch hóa quyết định điều hướng.
-* **Giai đoạn Trạng thái chờ (Wait-state):** Nhánh "Chưa thanh toán" kích hoạt luồng ngoại lệ, tạo thông báo và đưa quy trình vào trạng thái ngưng đọng để chờ dòng tiền (nhận khoản thanh toán còn thiếu).
-* **Giai đoạn Quay lui (Loopback):** Khởi tạo một vòng lặp nghiệp vụ. Quy trình không đi thẳng đến kết thúc mà phải quay ngược từ bước "Nhận thanh toán" về lại bước "Kiểm tra yêu cầu" ban đầu để đảm bảo tính tuân thủ tuyệt đối.
-* **Giai đoạn Hoàn tất (Convergence):** Hội tụ các luồng đã đáp ứng đủ điều kiện tài chính để thực thi tác vụ cuối cùng (bố trí lịch xét xử) và đóng quy trình.
+* **Giai đoạn Rẽ nhánh chi phí:** Logic cốt lõi được kiểm soát bằng cổng rẽ nhánh độc quyền. Các nhánh (Đủ phí / Thiếu phí / Có phụ phí) là các tùy chọn loại trừ lẫn nhau, đòi hỏi phải gán điều kiện luồng rõ ràng để minh bạch hóa quyết định điều hướng.
+* **Giai đoạn Trạng thái chờ:** Nhánh "Chưa thanh toán" kích hoạt luồng ngoại lệ, tạo thông báo và đưa quy trình vào trạng thái ngưng đọng để chờ dòng tiền (nhận khoản thanh toán còn thiếu).
+* **Giai đoạn Quay lui:** Khởi tạo một vòng lặp nghiệp vụ. Quy trình không đi thẳng đến kết thúc mà phải quay ngược từ bước "Nhận thanh toán" về lại bước "Kiểm tra yêu cầu" ban đầu để đảm bảo tính tuân thủ tuyệt đối.
+* **Giai đoạn Hoàn tất:** Hội tụ các luồng đã đáp ứng đủ điều kiện tài chính để thực thi tác vụ cuối cùng (bố trí lịch xét xử) và đóng quy trình.
 
 **2.7. Định hướng ánh xạ mô hình hóa BPMN 2.0**
 
@@ -64,9 +64,9 @@ Luồng quy trình được thiết kế theo 5 giai đoạn liên kết chặt 
 | --- | --- | --- |
 | Tiếp nhận yêu cầu bồi thường | **Start Event** | Có thể dùng Message Start Event nếu nhận yêu cầu qua hệ thống email/văn bản. |
 | Truy xuất & Kiểm tra hồ sơ | **Task** (User Task) | Thể hiện thao tác thủ công hoặc bán tự động của Thu ngân. |
-| Rẽ nhánh theo trạng thái phí | **Exclusive Gateway** (X) | Đảm bảo chỉ một luồng duy nhất được kích hoạt (Đã trả / Chưa trả). |
+| Rẽ nhánh theo trạng thái phí | **Exclusive Gateway** | Đảm bảo chỉ một luồng duy nhất được kích hoạt (Đã trả / Chưa trả). |
 | Lập biên lai / Thông báo nợ | **Task** (Service/User Task) | Sản sinh ra các Data Objects (Biên lai, Thông báo). |
-| Nhận khoản phí còn thiếu | **Intermediate Catch Event** (Message) hoặc **Receive Task** | Neo hệ thống lại cho đến khi nhận được sự kiện thanh toán từ chủ nhà. |
+| Nhận khoản phí còn thiếu | **Intermediate Catch Event** hoặc **Receive Task** | Neo hệ thống lại cho đến khi nhận được sự kiện thanh toán từ chủ nhà. |
 | Kiểm tra lại tính tuân thủ | **Sequence Flow** (Loop) | Vẽ đường dẫn nối ngược về Gateway hội tụ (Merge Gateway) nằm ngay trước Task Kiểm tra hồ sơ. |
 | Bố trí ngày xét xử | **Task** (User Task) | Tác vụ chốt hạ quy trình. |
 | Hoàn tất bố trí lịch | **End Event** | Điểm kết thúc thành công của luồng nghiệp vụ. |
@@ -75,7 +75,7 @@ Luồng quy trình được thiết kế theo 5 giai đoạn liên kết chặt 
 
 # Exercise 3.17 – Bổ sung đối tượng nghiệp vụ
 
-## 1. Đề bài (Problem Statement)
+## 1. Đề bài
 
 **Exercise 3.17** Extend the model of Exercise 3.16 by adding the business objects involved in this process.
 
@@ -109,7 +109,7 @@ Mô hình sử dụng các ký hiệu Đối tượng dữ liệu và Liên kế
 
 # Exercise 3.18 – Bổ sung nguồn lực
 
-## 1. Đề bài (Problem Statement)
+## 1. Đề bài
 
 **Exercise 3.18** Extend the model of Exercise 3.17 by adding the involved resources. Is there any non-human resource?
 
@@ -138,7 +138,7 @@ Vì vậy, khi xây dựng mô hình cần phân biệt rõ nguồn lực đư�
 
 # Exercise 3.19 – Chuẩn bị hồ sơ cho phiên tòa
 
-## 1. Đề bài (Problem Statement)
+## 1. Đề bài
 
 **Exercise 3.19** Model the following business process. Use gateways and data objects where needed.
 
@@ -192,7 +192,7 @@ Chuẩn bị đầy đủ hồ sơ cần thiết cho phiên tòa trong ngày, ph
 
 # Exercise 3.20 – Xử lý yêu cầu bồi thường bảo hiểm xe cơ giới
 
-## 1. Đề bài (Problem Statement)
+## 1. Đề bài 
 
 **Exercise 3.20** Model the following business process. Use pools and lanes where needed.
 
@@ -208,66 +208,47 @@ Tiếp nhận và xử lý yêu cầu bồi thường bảo hiểm xe cơ giới
 
 | Thành phần | Vai trò |
 |---|---|
-| Customer Pool | Khách hàng gửi yêu cầu và nhận thông báo |
-| Car Insurer Pool | Doanh nghiệp bảo hiểm thực hiện quy trình |
-| Notification Department Lane | Kiểm tra tính đầy đủ của hồ sơ và đăng ký yêu cầu |
-| Handling Department Lane | Kiểm tra bảo hiểm và đánh giá yêu cầu |
-| Garage Pool | Gara nhận liên hệ để xác nhận việc sửa chữa, nếu cần thể hiện tương tác bên ngoài |
+| Customer Pool | Khách hàng tương tác và giao tiếp với quy trình bảo hiểm. |
+| Insurer Pool | Doanh nghiệp bảo hiểm chứa và thực hiện quy trình bồi thường. |
+| Notification department Lane | Bộ phận chịu trách nhiệm kiểm tra hồ sơ và đăng ký yêu cầu. |
+| Handling department Lane | Bộ phận tiếp nhận, kiểm tra bảo hiểm, đánh giá và quyết định yêu cầu. |
+| Garage Pool | Đối tượng nhận thông báo ủy quyền sửa chữa từ phía doanh nghiệp bảo hiểm. |
 
 ### 2.3. Đầu vào và đầu ra
 
 | Loại | Đối tượng |
 |---|---|
-| Đầu vào | Yêu cầu bồi thường |
-| Đầu vào | Tài liệu liên quan |
-| Đầu vào | Thông tin hợp đồng bảo hiểm |
-| Đầu ra | Yêu cầu đã đăng ký |
-| Đầu ra | Kết quả đánh giá |
-| Đầu ra | Xác nhận cho phép sửa chữa |
-| Đầu ra | Lịch thanh toán |
-| Đầu ra | Kết quả từ chối yêu cầu, nếu không được chấp thuận |
-| Đầu ra | Thư thông báo gửi khách hàng |
+| Đầu vào | Tài liệu yêu cầu bồi thường liên kết với bước kiểm tra tài liệu. |
+| Đầu ra | Thư phê duyệt/Thông báo liên kết với bước gửi thư cho khách hàng. |
 
 ### 2.4. Các hoạt động chính
 
-1. Khách hàng gửi yêu cầu bồi thường kèm tài liệu.
-2. Bộ phận Notification kiểm tra tính đầy đủ của tài liệu.
-3. Đăng ký yêu cầu bồi thường.
-4. Bộ phận Handling tiếp nhận yêu cầu.
-5. Kiểm tra thông tin bảo hiểm.
-6. Đánh giá yêu cầu bồi thường.
-7. Nếu kết quả tích cực, gọi điện cho gara để cho phép sửa chữa.
-8. Sau đó lên lịch thanh toán.
-9. Nếu kết quả tiêu cực, từ chối yêu cầu.
-10. Trong cả hai trường hợp, gửi thư thông báo cho khách hàng.
-11. Kết thúc quy trình.
+1. Sự kiện bắt đầu khi nhận được thông điệp yêu cầu bồi thường (Claim received) từ khách hàng.
+2. Bộ phận Notification thực hiện kiểm tra tính đầy đủ của tài liệu (Check documents for completeness).
+3. Đăng ký yêu cầu (Register claim).
+4. Quy trình chuyển sang bộ phận Handling để tiếp nhận yêu cầu (Pick up claim).
+5. Kiểm tra thông tin bảo hiểm (Check insurance).
+6. Thực hiện đánh giá (Perform assessment).
+7. Nếu đánh giá tích cực (Positive), gọi điện cho gara để ủy quyền sửa chữa (Phone garage to authorize repairs).
+8. Sau khi ủy quyền, lên lịch thanh toán (Schedule payment).
+9. Nếu đánh giá tiêu cực (Negative), thực hiện từ chối yêu cầu (Reject claim).
+10. Luồng quy trình hội tụ để thực hiện gửi thư thông báo cho khách hàng (Send letter to customer).
+11. Quy trình kết thúc tại sự kiện hoàn tất xử lý (Claim handled).
 
-### 2.5. Quy tắc nghiệp vụ
+### 2.5. Định hướng mô hình hóa BPMN
 
-| Mã | Quy tắc |
-|---|---|
-| BR-01 | Quy trình bắt đầu khi khách hàng gửi yêu cầu kèm tài liệu liên quan. |
-| BR-02 | Bộ phận Notification kiểm tra tính đầy đủ và đăng ký yêu cầu. |
-| BR-03 | Bộ phận Handling kiểm tra bảo hiểm trước khi đánh giá yêu cầu. |
-| BR-04 | Nếu đánh giá tích cực, phải liên hệ gara để cho phép sửa chữa trước khi lên lịch thanh toán. |
-| BR-05 | Nếu đánh giá tiêu cực, yêu cầu bị từ chối. |
-| BR-06 | Khách hàng luôn nhận được thư thông báo kết quả. |
-
-### 2.6. Định hướng mô hình hóa BPMN
-
-- Sử dụng một pool cho doanh nghiệp bảo hiểm và các lane cho những bộ phận nội bộ.
-- Có thể dùng pool riêng cho khách hàng và gara để thể hiện giao tiếp giữa các tổ chức.
-- Dùng Exclusive Gateway sau hoạt động đánh giá.
-- Nhánh tích cực gồm hai hoạt động tuần tự: cho phép sửa chữa, sau đó lên lịch thanh toán.
-- Nhánh tiêu cực thực hiện hoạt động từ chối yêu cầu.
-- Hai nhánh hội tụ trước hoạt động gửi thư thông báo khách hàng.
-- Sử dụng Message Flow cho giao tiếp giữa các pool và Sequence Flow cho luồng bên trong cùng một pool.
-
+- Sử dụng ba Pool riêng biệt đại diện cho "Insurer", "Customer" và "Garage".
+- Bên trong Pool "Insurer", sử dụng hai Lane để phân tách công việc: "Notification department" và "Handling department".
+- Sử dụng đối tượng dữ liệu (Data Object) để mô tả hồ sơ đầu vào (Claim Documentation) và đầu ra (Approval Letter).
+- Sử dụng cổng rẽ nhánh loại trừ sau bước "Perform assessment" để chia luồng "Positive" và "Negative".
+- Nhánh "Positive" gồm hai hoạt động tuần tự (gọi gara ủy quyền sửa chữa, sau đó lên lịch thanh toán), trong khi nhánh "Negative" chỉ gồm hoạt động từ chối yêu cầu.
+- Sử dụng một Exclusive Gateway thứ hai để hội tụ nhánh tích cực và tiêu cực trước khi tới hoạt động gửi thư.
+- Sử dụng luồng thông điệp để minh họa tương tác xuyên Pool: Từ Customer đến sự kiện Bắt đầu, từ hoạt động gửi thư đến Customer, và từ hoạt động gọi điện cấp phép đến Garage.
 ---
 
 # Exercise 3.21 – Đánh giá yêu cầu bồi thường bảo hiểm
 
-## 1. Đề bài (Problem Statement)
+## 1. Đề bài
 
 **Exercise 3.21** Model the following business process. Use pools and lanes where needed.
 
@@ -283,77 +264,69 @@ Xác minh tư cách bảo hiểm của người yêu cầu, phân loại mức �
 
 | Thành phần | Vai trò |
 |---|---|
-| Claimant Pool | Người gửi yêu cầu và cung cấp biểu mẫu |
-| Insurance Organization Pool | Tổ chức bảo hiểm xử lý yêu cầu |
-| Claims Officer Lane | Kiểm tra tư cách bảo hiểm và tính đầy đủ của biểu mẫu |
-| Senior Claims Officer Lane | Đánh giá mức độ nghiêm trọng của yêu cầu |
-| SAP System | Hệ thống hỗ trợ gửi thông báo và biểu mẫu |
-| Claims Management System | Hệ thống lưu trữ và đăng ký yêu cầu |
-
-SAP và hệ thống quản lý khiếu nại có thể được thể hiện dưới dạng nguồn lực hệ thống hoặc các tác vụ dịch vụ trong quy trình. Không nhất thiết phải tạo pool riêng cho từng hệ thống.
+| Claimant Pool | Người yêu cầu, tương tác với quy trình thông qua các luồng thông điệp. |
+| Insurance Company Pool | Tổ chức bảo hiểm, chứa toàn bộ luồng xử lý chính của quy trình khiếu nại. |
+| Claims officer Lane | Làn chứa các tác vụ nhận/kiểm tra biểu mẫu, đăng ký yêu cầu, và gửi thông báo từ chối/cập nhật biểu mẫu. |
+| Senior claims officer Lane | Làn chứa tác vụ đánh giá mức độ nghiêm trọng của yêu cầu và gửi biểu mẫu liên quan. |
 
 ### 2.3. Đầu vào và đầu ra
 
+Sơ đồ không khai báo tường minh các đối tượng dữ liệu (Data Object), mà luồng thông tin được thể hiện trực tiếp qua 5 luồng thông điệp (Message Flow):
+
 | Loại | Đối tượng |
 |---|---|
-| Đầu vào | Yêu cầu bồi thường |
-| Đầu vào | Thông tin xác minh bảo hiểm |
-| Đầu vào | Thông tin đánh giá mức độ nghiêm trọng |
-| Đầu vào | Biểu mẫu đã điền |
-| Đầu ra | Thông báo yêu cầu bị từ chối |
-| Đầu ra | Biểu mẫu tương ứng với yêu cầu đơn giản hoặc phức tạp |
-| Đầu ra | Yêu cầu cập nhật biểu mẫu |
-| Đầu ra | Yêu cầu đã được đăng ký trong hệ thống |
+| Đầu vào | Thông điệp bắt đầu yêu cầu từ Claimant. |
+| Đầu vào | Biểu mẫu được gửi lại từ Claimant. |
+| Đầu ra | Thông báo tự động từ chối gửi đến Claimant. |
+| Đầu ra | Biểu mẫu liên quan gửi đến Claimant. |
+| Đầu ra | Yêu cầu cập nhật biểu mẫu gửi đến Claimant. |
 
 ### 2.4. Quy tắc nghiệp vụ
 
 | Mã | Quy tắc |
 |---|---|
-| BR-01 | Phải kiểm tra tư cách bảo hiểm trước khi thực hiện các bước tiếp theo. |
-| BR-02 | Nếu người yêu cầu không được bảo hiểm, gửi thông báo tự động về việc yêu cầu phải bị từ chối. |
-| BR-03 | Nếu người yêu cầu được bảo hiểm, nhân viên cấp cao đánh giá mức độ nghiêm trọng. |
-| BR-04 | Biểu mẫu được gửi dựa trên phân loại yêu cầu đơn giản hoặc phức tạp. |
-| BR-05 | Nhân viên kiểm tra tính đầy đủ của biểu mẫu sau khi nhận lại. |
-| BR-06 | Nếu biểu mẫu đầy đủ, đăng ký yêu cầu vào hệ thống quản lý khiếu nại. |
-| BR-07 | Nếu biểu mẫu chưa đầy đủ, yêu cầu người nộp cập nhật. |
-| BR-08 | Biểu mẫu cập nhật được kiểm tra lại. |
+| BR-01 | Quy trình thực hiện rẽ nhánh ngay sau tác vụ đầu tiên để kiểm tra tình trạng bảo hiểm. |
+| BR-02 | Nếu thuộc nhánh "Not insured", gửi thông báo tự động từ chối yêu cầu và kết thúc quy trình. |
+| BR-03 | Nếu thuộc nhánh "Otherwise" (Được bảo hiểm), nhân viên cấp cao sẽ đánh giá mức độ nghiêm trọng. |
+| BR-04 | Dựa trên đánh giá, hệ thống tiến hành gửi biểu mẫu liên quan cho người yêu cầu. |
+| BR-05 | Khi nhận được biểu mẫu phản hồi, tiến hành kiểm tra tính đầy đủ. |
+| BR-06 | Nếu nhánh "All relevant details provided" được thỏa mãn, thực hiện đăng ký yêu cầu và kết thúc quy trình. |
+| BR-07 | Nếu rơi vào nhánh "Otherwise", thông báo cho người yêu cầu cập nhật biểu mẫu, tạo thành một vòng lặp quay lại bước tiếp nhận. |
 
 ### 2.5. Phân tích luồng điều khiển
 
-1. Nhận yêu cầu bồi thường.
-2. Nhân viên kiểm tra người yêu cầu có được bảo hiểm hay không.
-3. Nếu không được bảo hiểm, gửi thông báo tự động qua SAP và kết thúc.
-4. Nếu được bảo hiểm, nhân viên cấp cao đánh giá mức độ nghiêm trọng.
-5. Phân loại yêu cầu thành đơn giản hoặc phức tạp.
-6. Gửi biểu mẫu phù hợp qua SAP.
-7. Chờ người yêu cầu gửi lại biểu mẫu.
-8. Kiểm tra tính đầy đủ của biểu mẫu.
-9. Nếu đầy đủ, đăng ký yêu cầu vào hệ thống quản lý khiếu nại và kết thúc.
-10. Nếu chưa đầy đủ, gửi yêu cầu cập nhật biểu mẫu qua SAP.
-11. Chờ nhận biểu mẫu cập nhật.
-12. Kiểm tra lại biểu mẫu.
+1. Quy trình bắt đầu tại sự kiện Message Start Event khi nhận được thông điệp yêu cầu từ Claimant.
+2. Tại lane "Claims officer", hệ thống thực hiện tác vụ đầu tiên ("Senior claims officer") để kiểm tra đầu vào.
+3. Luồng đi tới Exclusive Gateway thứ nhất:
+    - Nhánh "Not insured": Thực hiện tác vụ gửi thông báo tự động từ chối và đi tới sự kiện kết thúc.
+    - Nhánh "Otherwise": Luồng điều khiển chuyển xuống lane "Senior claims officer".
+4. Nhân viên cấp cao thực hiện tác vụ đánh giá mức độ nghiêm trọng của khiếu nại.
+5. Thực hiện gửi biểu mẫu liên quan cho Claimant.
+6. Luồng điều khiển đi qua một Exclusive Gateway có vai trò hội tụ.
+7. Tại lane "Claims officer", thực hiện tác vụ nhận lại biểu mẫu.
+8. Thực hiện tác vụ kiểm tra tính đầy đủ của biểu mẫu.
+9. Luồng đi tới Exclusive Gateway thứ hai để kiểm tra kết quả:
+    - Nhánh "All relevant details provided": Tiến hành đăng ký yêu cầu và tới sự kiện kết thúc.
+    - Nhánh "Otherwise": Thực hiện tác vụ thông báo cập nhật biểu mẫu. Luồng sau đó quay ngược lại Exclusive Gateway hội tụ ở bước 6 để chờ nhận lại biểu mẫu.
 
 ### 2.6. Định hướng mô hình hóa BPMN
 
-- Sử dụng Exclusive Gateway để kiểm tra tư cách bảo hiểm.
-- Sử dụng Exclusive Gateway để phân loại yêu cầu đơn giản hoặc phức tạp.
-- Sử dụng Exclusive Gateway để kiểm tra tính đầy đủ của biểu mẫu.
-- Thể hiện việc gửi và nhận biểu mẫu bằng các tác vụ và sự kiện phù hợp.
-- Dùng luồng quay lại để mô tả vòng lặp cập nhật biểu mẫu.
-- Dùng tác vụ dịch vụ cho hoạt động được hỗ trợ bởi SAP và hệ thống quản lý khiếu nại, tùy quy ước mô hình hóa.
-
-**Lưu ý:** Đề bài chưa nêu kết quả cụ thể nếu biểu mẫu vẫn thiếu thông tin sau lần cập nhật. Không nên tự bổ sung nhánh từ chối yêu cầu. Có thể thể hiện vòng lặp kiểm tra lại cho đến khi đủ thông tin, đồng thời ghi rõ đây là cách diễn giải quy trình từ mô tả hiện có.
+- Sử dụng hai Pool chính là "Insurance Company" (chứa các lane xử lý) và "Claimant" (thể hiện như một hộp đen).
+- Phân chia trách nhiệm nội bộ trong "Insurance Company" bằng hai Lane: "Claims officer" và "Senior claims officer".
+- Sự giao tiếp giữa công ty bảo hiểm và khách hàng được định nghĩa bằng 5 luồng thông điệp (Message Flow) cắt ngang các Pool.
+- Sử dụng 3 cổng rẽ nhánh Exclusive Gateway: hai cổng để phân nhánh logic xử lý (bảo hiểm và tính đầy đủ hồ sơ) và một cổng để hội tụ vòng lặp tiếp nhận hồ sơ.
+- Cấu hình các tác vụ gửi thông tin ra ngoài (từ chối, gửi biểu mẫu, thông báo cập nhật) dưới dạng Send Task.
+- Cấu hình bước tiếp nhận biểu mẫu bổ sung từ khách hàng dưới dạng Receive Task.
 
 ---
 
 # Exercise 3.23 – Quy trình cấp phát thuốc theo đơn
 
-## 1. Đề bài (Problem Statement)
+## 1. Đề bài
 
 **Exercise 3.23**
 
 1. Model the prescription fulfillment process described in Exercise 1.6 (page 30). Use sub-processes where required, and nest them appropriately.
-
 2. Is there any sub-process that can potentially be shared with other business processes of the same pharmacy, or of other pharmacies, e.g. as part of a consortium?
 
 ## 2. Phân tích nghiệp vụ
@@ -365,9 +338,7 @@ Mô hình hóa quy trình thực hiện đơn thuốc bằng BPMN, phân rã quy
 ### 2.2. Thông tin cần xác định từ đề gốc
 
 Đề bài tham chiếu Exercise 1.6 ở trang 30 nhưng chưa bao gồm mô tả chi tiết quy trình. Cần bổ sung nội dung đề gốc trước khi hoàn thiện phân tích.
-
 Các thông tin cần làm rõ gồm:
-
 - Cách tiếp nhận đơn thuốc.
 - Các bước xác minh đơn thuốc.
 - Các tác nhân tham gia.
@@ -379,44 +350,5 @@ Các thông tin cần làm rõ gồm:
 ### 2.3. Phân rã quy trình
 
 Sau khi có đầy đủ đề bài, cần xác định những nhóm hoạt động đủ phức tạp hoặc có ý nghĩa độc lập để đưa vào subprocess.
-
 Các nhóm hoạt động như tiếp nhận đơn thuốc, xác minh thông tin, chuẩn bị thuốc và cấp phát thuốc chỉ là những khả năng cần xem xét, chưa phải cấu trúc đã được xác nhận từ đề gốc.
-
-### 2.4. Khả năng tái sử dụng subprocess
-
-Tùy theo nội dung thực tế của Exercise 1.6, các subprocess có thể được xem xét để tái sử dụng bao gồm:
-
-- Xác minh dữ liệu đơn thuốc.
-- Kiểm tra tình trạng thuốc trong kho.
-- Quản lý tồn kho.
-- Xử lý thanh toán.
-- Thông báo cho khách hàng.
-- Quản lý hồ sơ đơn thuốc.
-
-Việc tái sử dụng cần dựa trên sự tương đồng thực sự về quy trình và quy tắc nghiệp vụ, không chỉ vì các hoạt động có tên gọi giống nhau.
-
-### 2.5. Khả năng dùng chung giữa các nhà thuốc
-
-Một subprocess có thể được chuẩn hóa để sử dụng tại nhiều quy trình trong cùng nhà thuốc hoặc giữa các nhà thuốc trong một liên minh.
-
-Tuy nhiên, cần phân biệt các hoạt động hành chính có thể dùng chung với những hoạt động đòi hỏi quy tắc chuyên môn, dữ liệu và điều kiện vận hành riêng.
-
-Kết luận cuối cùng về các subprocess có thể dùng chung cần được đưa ra sau khi phân tích đầy đủ đề bài Exercise 1.6.
-
----
-
-# Tổng kết
-
-Thông qua các bài tập, repository tập trung rèn luyện những kỹ năng sau:
-
-- Phân tích yêu cầu nghiệp vụ từ mô tả bằng văn bản.
-- Xác định tác nhân, hoạt động, đầu vào, đầu ra và quy tắc nghiệp vụ.
-- Mô hình hóa luồng tuần tự, luồng song song và luồng điều kiện.
-- Sử dụng Gateway để thể hiện các điểm quyết định.
-- Thể hiện dữ liệu nghiệp vụ bằng Data Objects và Data Associations.
-- Phân chia trách nhiệm bằng Pools và Lanes.
-- Mô hình hóa vòng lặp xử lý và các hoạt động chờ.
-- Phân rã quy trình bằng Subprocesses.
-- Xác định cơ hội chuẩn hóa và tái sử dụng quy trình.
-
 Repository phục vụ mục đích học tập và xây dựng hồ sơ năng lực về Business Process Modeling và Business Analysis. Các giả định trong quá trình mô hình hóa cần được ghi rõ, tách biệt với yêu cầu được nêu trực tiếp trong đề bài.
