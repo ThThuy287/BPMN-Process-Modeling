@@ -70,4 +70,70 @@ Luồng quy trình được thiết kế theo 5 giai đoạn liên kết chặt 
 | Hoàn tất bố trí lịch | **End Event** | Điểm kết thúc thành công của luồng nghiệp vụ. |
 
 ## 3. Ảnh sơ đồ
-<img width="4536" height="1200" alt="Bai3 16_T139" src="https://github.com/user-attachments/assets/cd397d35-4e54-4eac-b2fa-1a50f266e0ea" />
+<img width="4536" height="1200" alt="Bai3 16_T139" src="https://github.com/user-attachments/assets/d6d09ee1-8116-4f78-bea5-f3f99e9d9235" />
+---
+
+# Exercise 3.17 – Bổ sung đối tượng nghiệp vụ
+
+## 1. Đề bài
+
+**Exercise 3.17** Extend the model of Exercise 3.16 by adding the business objects involved in this process.
+
+## 2. Phân tích nghiệp vụ
+
+### 2.1. Mục tiêu
+
+Mở rộng mô hình của Exercise 3.16 bằng cách thể hiện các tài liệu và thông tin nghiệp vụ được sử dụng hoặc tạo ra trong quy trình.
+
+### 2.2. Các đối tượng nghiệp vụ (Business Objects)
+
+| Đối tượng | Mục đích sử dụng trong quy trình |
+| :--- | :--- |
+| **Yêu cầu bồi thường** | Là tài liệu đầu vào để khởi tạo quy trình, được sử dụng trực tiếp trong hoạt động tiếp nhận yêu cầu. |
+| **Hồ sơ tài sản** | Là tài liệu đầu vào chứa mô tả tài sản, làm cơ sở để đối chiếu và kiểm tra tính hợp lệ của yêu cầu |
+| **Biên lai thanh toán** | Là kết quả đầu ra của hoạt động lập biên lai khi chủ sở hữu đã thanh toán các khoản phí bổ sung phát sinh |
+| **Thông báo phí** | Là kết quả đầu ra của hoạt động tạo thông báo yêu cầu thanh toán trong trường hợp phí chưa được nộp |
+| **Danh sách án của thẩm phán** | Là kho dữ liệu lưu trữ thông tin ngày xét xử, được cập nhật sau khi hoàn tất hoạt động bố trí lịch xét xử |
+
+*(Lưu ý: "Thông tin thanh toán" được xử lý như một điều kiện rẽ nhánh sau bước "Check fee payment" chứ không phải là một đối tượng dữ liệu độc lập trên sơ đồ*
+
+### 2.3. Định hướng mô hình hóa
+
+Mô hình sử dụng các ký hiệu Đối tượng dữ liệu và Liên kết dữ liệu để biểu diễn mối quan hệ tương tác giữa các hoạt động và luồng thông tin:
+* **Dữ liệu đầu vào:** Yêu cầu bồi thường và Hồ sơ tài sản được sử dụng làm đầu vào cho các bước tiếp nhận và kiểm tra hồ sơ.
+* **Dữ liệu đầu ra:** Biên lai thanh toán và Thông báo phí được tạo ra từ các hoạt động xử lý tài chính tương ứng.
+* **Lưu trữ dữ liệu:** Thông tin lịch xét xử được ghi nhận vào kho dữ liệu của thẩm phán ở cuối quy trình.
+* **Sự phân biệt luồng:** Sơ đồ thể hiện sự tách biệt rõ ràng giữa **Sequence Flow** (các mũi tên nét liền chỉ định thứ tự thực hiện từ "Receive request" đến "Allocate hearing date") và **Data Association** (các mũi tên nét đứt thể hiện việc truy xuất hoặc tạo mới các tệp tài liệu).
+
+## 3. Ảnh sơ đồ
+<img width="4536" height="1482" alt="Bai3 17_T139" src="https://github.com/user-attachments/assets/024c6031-7004-4345-8207-9bb00afa172d" />
+---
+
+# Exercise 3.18 – Bổ sung nguồn lực
+
+## 1. Đề bài
+
+**Exercise 3.18** Extend the model of Exercise 3.17 by adding the involved resources. Is there any non-human resource?
+
+## 2. Phân tích nghiệp vụ
+
+### 2.1. Mục tiêu
+
+Bổ sung nguồn lực thực hiện quy trình và xác định liệu ngoài con người còn có nguồn lực phi con người tham gia hay không.
+
+### 2.2. Các nguồn lực
+
+| Nguồn lực | Phân loại | Vai trò |
+|---|---|---|
+| Nhân viên thu ngân | Con người | Thực hiện các hoạt động tiếp nhận, kiểm tra và xử lý hồ sơ |
+| Chủ sở hữu | Con người | Nộp yêu cầu và thanh toán phí |
+| Kho lưu trữ hồ sơ | Phi con người, nếu được giả định | Lưu trữ và cung cấp hồ sơ tài sản |
+| Hệ thống xử lý thanh toán | Phi con người, nếu được giả định | Hỗ trợ kiểm tra hoặc xử lý thanh toán |
+
+### 2.3. Trả lời câu hỏi
+
+Có thể có nguồn lực phi con người, chẳng hạn kho lưu trữ hồ sơ hoặc hệ thống xử lý thanh toán. Tuy nhiên, đề bài không xác định cụ thể các hệ thống này.
+Vì vậy, khi xây dựng mô hình cần phân biệt rõ nguồn lực được nêu trực tiếp trong đề với nguồn lực được giả định để phục vụ mục đích mô hình hóa.
+
+## 3. Ảnh sơ đồ
+<img width="5310" height="2160" alt="Bai3 18_T139" src="https://github.com/user-attachments/assets/618a24bf-963c-46da-ac0b-071a0b7e669b" />
