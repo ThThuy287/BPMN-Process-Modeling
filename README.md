@@ -1,494 +1,445 @@
 # BPMN Process Modeling
 
-## 1. Introduction
+# Exercise 3.16 – Quy trình bồi thường thiệt hại
 
-This repository documents the analysis and modeling of business processes using Business Process Model and Notation (BPMN).
+## 1. Đề bài (Problem Statement)
 
-Each exercise is organized into two main parts:
+**Exercise 3.16** Model the control flow of the following business process for damage compensation.
 
-1. **Problem Statement:** The original business scenario and modeling requirements.
-2. **Business Process Analysis:** A structured analysis of the process, including participants, activities, business rules, decision points, inputs, outputs, and control flow.
+If a tenant is evicted because of damages to the premises, a process needs to be started by the tribunal in order to hold a hearing to assess the amount of compensation the tenant owes to the owner of the premises. This process starts when a cashier of the tribunal receives a request for compensation from the owner. The cashier then retrieves the file for those particular premises and checks that the request is both acceptable for filing and compliant with the description of the premises on file. After these checks, the cashier needs to set a hearing date. Setting a hearing date incurs fees to the owner. It may be that the owner has already paid the fees with the request, in which case the cashier allocates a hearing date and the process completes. It may be that additional fees are required, but the owner has already paid also those fees. In this case the cashier generates a receipt for the additional fees and proceeds with allocating the hearing date. Finally, if the owner has not paid the required fees, the cashier produces a fees notice and waits for the owner to pay the fees before reassessing the document compliance.
 
-The purpose is to translate textual business requirements into structured process models and demonstrate business process analysis skills relevant to Business Analysis (BA).
+## 2. Phân tích nghiệp vụ
+
+### 2.1. Mục tiêu quy trình
+
+Tiếp nhận và xử lý yêu cầu bồi thường thiệt hại của chủ sở hữu, kiểm tra tính hợp lệ của hồ sơ, xác minh tình trạng thanh toán phí và bố trí ngày xét xử khi đáp ứng các điều kiện cần thiết.
+
+### 2.2. Tác nhân tham gia
+
+| Tác nhân | Vai trò |
+|---|---|
+| Chủ sở hữu (Owner) | Gửi yêu cầu bồi thường và thanh toán các khoản phí cần thiết |
+| Nhân viên thu ngân của tòa án (Tribunal Cashier) | Tiếp nhận hồ sơ, tra cứu hồ sơ tài sản, kiểm tra tính hợp lệ, xử lý phí và bố trí ngày xét xử |
+| Tòa án (Tribunal) | Đơn vị tổ chức và quản lý quy trình |
+
+### 2.3. Đầu vào và đầu ra
+
+| Loại | Đối tượng nghiệp vụ |
+|---|---|
+| Đầu vào | Yêu cầu bồi thường |
+| Đầu vào | Hồ sơ về mặt bằng/tài sản |
+| Đầu vào | Thông tin thanh toán phí |
+| Đầu ra | Biên lai thanh toán phí bổ sung |
+| Đầu ra | Thông báo yêu cầu thanh toán phí |
+| Đầu ra | Ngày xét xử được bố trí |
+
+### 2.4. Các hoạt động chính
+
+1. Tiếp nhận yêu cầu bồi thường.
+2. Truy xuất hồ sơ về mặt bằng/tài sản.
+3. Kiểm tra tính chấp nhận của yêu cầu và đối chiếu với mô tả tài sản trong hồ sơ.
+4. Xác định tình trạng thanh toán phí.
+5. Nếu phí ban đầu đã đủ, bố trí ngày xét xử.
+6. Nếu có phí bổ sung và khoản phí này đã được thanh toán, lập biên lai rồi bố trí ngày xét xử.
+7. Nếu phí chưa được thanh toán đầy đủ, lập thông báo yêu cầu thanh toán và chờ thanh toán.
+8. Sau khi nhận được khoản phí còn thiếu, kiểm tra lại tính tuân thủ của hồ sơ theo mô tả quy trình.
+9. Bố trí ngày xét xử và kết thúc quy trình.
+
+### 2.5. Quy tắc nghiệp vụ
+
+| Mã | Quy tắc |
+|---|---|
+| BR-01 | Quy trình bắt đầu khi nhân viên thu ngân nhận được yêu cầu bồi thường từ chủ sở hữu. |
+| BR-02 | Phải truy xuất hồ sơ tài sản để đối chiếu thông tin. |
+| BR-03 | Yêu cầu phải được chấp nhận để nộp và phù hợp với mô tả tài sản trong hồ sơ. |
+| BR-04 | Ngày xét xử được bố trí sau khi các khoản phí áp dụng đã được thanh toán. |
+| BR-05 | Nếu khoản phí ban đầu đã đủ, bố trí ngày xét xử mà không cần lập biên lai phí bổ sung. |
+| BR-06 | Nếu phí bổ sung đã được thanh toán, phải lập biên lai trước khi bố trí ngày xét xử. |
+| BR-07 | Nếu phí chưa được thanh toán, phải gửi thông báo và chờ chủ sở hữu thanh toán. |
+| BR-08 | Sau khi nhận được khoản thanh toán còn thiếu, hồ sơ được kiểm tra lại theo yêu cầu của đề bài. |
+
+### 2.6. Phân tích luồng điều khiển
+
+Quy trình có thể chia thành các giai đoạn:
+
+- **Tiếp nhận:** Nhận yêu cầu bồi thường và truy xuất hồ sơ tài sản.
+- **Kiểm tra:** Xác minh tính hợp lệ và mức độ phù hợp của thông tin.
+- **Xử lý phí:** Xác định khoản phí đã thanh toán, phí bổ sung hoặc khoản phí còn thiếu.
+- **Xử lý kết quả thanh toán:** Lập biên lai hoặc thông báo yêu cầu thanh toán.
+- **Hoàn tất:** Bố trí ngày xét xử sau khi đáp ứng điều kiện thanh toán.
+
+Điểm quyết định về phí cần được mô hình hóa bằng Exclusive Gateway vì các trường hợp thanh toán là những nhánh lựa chọn thay thế nhau.
+
+Nhánh chưa thanh toán phải có hoạt động chờ nhận tiền và luồng quay lại bước kiểm tra hồ sơ. Cần thể hiện rõ điều kiện trên các nhánh gateway để người đọc hiểu lý do quy trình đi theo từng hướng.
+
+### 2.7. Định hướng mô hình hóa BPMN
+
+| Thành phần BPMN | Cách áp dụng |
+|---|---|
+| Start Event | Nhận yêu cầu bồi thường |
+| Task | Truy xuất hồ sơ tài sản |
+| Task | Kiểm tra yêu cầu và đối chiếu hồ sơ |
+| Exclusive Gateway | Phân nhánh theo tình trạng thanh toán |
+| Task | Lập biên lai phí bổ sung |
+| Task | Lập thông báo yêu cầu thanh toán |
+| Intermediate Catch Event hoặc cơ chế chờ phù hợp | Nhận khoản thanh toán còn thiếu |
+| Task | Kiểm tra lại tính tuân thủ của hồ sơ |
+| Task | Bố trí ngày xét xử |
+| End Event | Hoàn tất bố trí ngày xét xử |
 
 ---
 
-# 2. Exercise 3.16 – Damage Compensation Process
+# Exercise 3.17 – Bổ sung đối tượng nghiệp vụ
 
-## 2.1. Problem Statement
+## 1. Đề bài (Problem Statement)
 
-**Task:** Model the control flow of the following business process for damage compensation.
+**Exercise 3.17** Extend the model of Exercise 3.16 by adding the business objects involved in this process.
 
-If a tenant is evicted because of damages to the premises, a process needs to be started by the tribunal in order to hold a hearing to assess the amount of compensation the tenant owes to the owner of the premises.
+## 2. Phân tích nghiệp vụ
 
-This process starts when a cashier of the tribunal receives a request for compensation from the owner. The cashier then retrieves the file for those particular premises and checks that the request is both acceptable for filing and compliant with the description of the premises on file.
+### 2.1. Mục tiêu
 
-After these checks, the cashier needs to set a hearing date. Setting a hearing date incurs fees to the owner.
+Mở rộng mô hình của Exercise 3.16 bằng cách thể hiện các tài liệu và thông tin nghiệp vụ được sử dụng hoặc tạo ra trong quy trình.
 
-- If the owner has already paid the fees with the request, the cashier allocates a hearing date and the process completes.
-- If additional fees are required, but the owner has already paid those fees, the cashier generates a receipt for the additional fees and proceeds with allocating the hearing date.
-- If the owner has not paid the required fees, the cashier produces a fees notice and waits for the owner to pay the fees before reassessing the document compliance.
+### 2.2. Các đối tượng nghiệp vụ
 
-## 2.2. Business Process Analysis
-
-### A. Process Objective
-
-To process a compensation request, verify its compliance with the premises records, ensure that the required fees are paid, and allocate a hearing date.
-
-### B. Process Participants
-
-| Participant | Responsibility |
+| Đối tượng | Mục đích sử dụng |
 |---|---|
-| Owner | Submits the compensation request and pays the required fees |
-| Tribunal Cashier | Retrieves records, checks documents, handles fees, issues receipts or notices, and allocates the hearing date |
-| Tribunal | Provides the administrative context in which the process takes place |
+| Yêu cầu bồi thường | Đầu vào để khởi tạo quy trình |
+| Hồ sơ tài sản | Cơ sở để kiểm tra thông tin |
+| Mô tả tài sản | Dùng để đối chiếu với yêu cầu bồi thường |
+| Thông tin thanh toán | Xác định tình trạng thanh toán phí |
+| Biên lai | Kết quả của hoạt động lập biên lai phí bổ sung |
+| Thông báo phí | Kết quả của hoạt động yêu cầu thanh toán |
+| Thông tin ngày xét xử | Kết quả của hoạt động bố trí lịch xét xử |
 
-For the control-flow model, the owner can be represented as an external participant if interactions with the owner need to be shown explicitly. Otherwise, the model can focus on the cashier's internal workflow.
+### 2.3. Định hướng mô hình hóa
 
-### C. Process Inputs and Outputs
+Sử dụng Data Object và Data Association để biểu diễn mối quan hệ giữa các hoạt động và dữ liệu.
 
-| Type | Business Object |
-|---|---|
-| Input | Compensation request |
-| Input | Premises file |
-| Input | Fee payment information |
-| Output | Fee receipt, if additional fees have been paid |
-| Output | Fee notice, if payment is outstanding |
-| Output | Allocated hearing date |
+- Yêu cầu bồi thường được sử dụng trong quá trình tiếp nhận và kiểm tra.
+- Hồ sơ tài sản được sử dụng để xác minh thông tin.
+- Thông tin thanh toán được sử dụng khi xác định nhánh xử lý phí.
+- Biên lai và thông báo phí là đầu ra của các hoạt động tương ứng.
+- Thông tin ngày xét xử được tạo ra sau khi bố trí lịch.
 
-### D. Main Activities
-
-1. Receive compensation request.
-2. Retrieve premises file.
-3. Check request acceptability and compliance with the premises description.
-4. Determine the required fees and whether payment is sufficient.
-5. Generate a receipt if additional fees have already been paid.
-6. Issue a fee notice if payment is outstanding.
-7. Wait for payment and reassess document compliance when required.
-8. Allocate a hearing date.
-9. End the process.
-
-### E. Business Rules
-
-| ID | Business Rule |
-|---|---|
-| BR-01 | The process starts when the tribunal cashier receives a compensation request. |
-| BR-02 | The premises file must be retrieved to support the document compliance check. |
-| BR-03 | The request must be acceptable for filing and compliant with the premises description on file. |
-| BR-04 | A hearing date can be allocated after the applicable fee requirements have been satisfied. |
-| BR-05 | If the original payment is sufficient, the cashier allocates a hearing date directly. |
-| BR-06 | If additional fees have already been paid, the cashier generates a receipt before allocating the hearing date. |
-| BR-07 | If the required fees have not been paid, the cashier issues a fee notice and waits for payment. |
-| BR-08 | After the outstanding payment is received, document compliance is reassessed. |
-
-### F. Control Flow Analysis
-
-The process can be divided into the following stages:
-
-1. **Request intake:** Receive the request and retrieve the premises file.
-2. **Document verification:** Check acceptability and compliance.
-3. **Fee assessment:** Determine whether the initial payment is sufficient, additional fees have been paid, or payment remains outstanding.
-4. **Payment handling:** Issue a receipt or fee notice where applicable.
-5. **Hearing scheduling:** Allocate the hearing date once the applicable fee requirements have been satisfied.
-
-The model should use an exclusive gateway to represent alternative fee-payment outcomes. The outstanding-payment path includes a wait state and a return flow to the document compliance check after payment.
-
-### G. BPMN Modeling Decisions
-
-| BPMN Element | Application |
-|---|---|
-| Start Event | Compensation request received |
-| Task | Retrieve premises file |
-| Task | Check request acceptability and document compliance |
-| Exclusive Gateway | Determine the applicable fee-payment outcome |
-| Task | Generate receipt for additional fees |
-| Task | Produce fee notice |
-| Intermediate Catch Event or equivalent waiting representation | Required payment received |
-| Task | Reassess document compliance |
-| Task | Allocate hearing date |
-| End Event | Hearing date allocated and process completed |
-
-**Modeling note:** The exercise explicitly describes the document compliance check and the fee-payment alternatives. The precise gateway conditions and the placement of the compliance loop should be made explicit in the diagram.
+Cần phân biệt Sequence Flow, thể hiện thứ tự thực hiện hoạt động, với Data Association, thể hiện quan hệ sử dụng hoặc tạo dữ liệu.
 
 ---
 
-# 3. Exercise 3.17 – Damage Compensation with Business Objects
+# Exercise 3.18 – Bổ sung nguồn lực
 
-## 3.1. Problem Statement
+## 1. Đề bài (Problem Statement)
 
-**Task:** Extend the model of Exercise 3.16 by adding the business objects involved in the process.
+**Exercise 3.18** Extend the model of Exercise 3.17 by adding the involved resources. Is there any non-human resource?
 
-The business scenario is the same as Exercise 3.16. The extension focuses on the information and documents used or produced by the process.
+## 2. Phân tích nghiệp vụ
 
-## 3.2. Business Process Analysis
+### 2.1. Mục tiêu
 
-### A. Business Objects
+Bổ sung nguồn lực thực hiện quy trình và xác định liệu ngoài con người còn có nguồn lực phi con người tham gia hay không.
 
-| Business Object | Role in the Process |
-|---|---|
-| Compensation Request | Submitted by the owner to initiate the process |
-| Premises File | Retrieved by the cashier for verification |
-| Premises Description | Used to check consistency with the compensation request |
-| Fee Payment Information | Used to determine whether the required fees have been paid |
-| Fee Receipt | Generated when additional fees have already been paid |
-| Fee Notice | Issued when payment is outstanding |
-| Hearing Date Information | Produced when a hearing date is allocated |
+### 2.2. Các nguồn lực
 
-### B. Data Associations
-
-The BPMN diagram should show which activities use or produce each business object.
-
-- The compensation request is an input to the intake and verification activities.
-- The premises file and premises description support document compliance checks.
-- Fee payment information supports the fee assessment decision.
-- The fee receipt is an output of the receipt-generation task.
-- The fee notice is an output of the fee-notification task.
-- Hearing date information is produced by the scheduling task.
-
-### C. Modeling Decisions
-
-Use BPMN Data Objects and Data Associations to represent the relationship between activities and business information. Sequence Flows should continue to represent the order of process execution; data associations should not replace sequence flows.
-
----
-
-# 4. Exercise 3.18 – Damage Compensation with Resources
-
-## 4.1. Problem Statement
-
-**Task:** Extend the model of Exercise 3.17 by adding the involved resources. Determine whether any non-human resource is involved.
-
-## 4.2. Business Process Analysis
-
-### A. Resources
-
-| Resource | Type | Role |
+| Nguồn lực | Phân loại | Vai trò |
 |---|---|---|
-| Tribunal Cashier | Human | Performs the administrative activities |
-| Owner | Human | Submits the request and makes payments |
-| Tribunal Records System or Filing Repository | Potential non-human resource | Stores or provides access to premises records, if represented as a system or repository |
-| Payment Processing System | Potential non-human resource | Supports payment verification, if such a system is assumed or documented |
+| Nhân viên thu ngân | Con người | Thực hiện các hoạt động tiếp nhận, kiểm tra và xử lý hồ sơ |
+| Chủ sở hữu | Con người | Nộp yêu cầu và thanh toán phí |
+| Kho lưu trữ hồ sơ | Phi con người, nếu được giả định | Lưu trữ và cung cấp hồ sơ tài sản |
+| Hệ thống xử lý thanh toán | Phi con người, nếu được giả định | Hỗ trợ kiểm tra hoặc xử lý thanh toán |
 
-**Important:** The scenario explicitly identifies the cashier and owner but does not specify particular software systems. A records system or payment system should only be included as an assumed resource when the modeling scope allows such assumptions.
+### 2.3. Trả lời câu hỏi
 
-### B. Resource Assignment
+Có thể có nguồn lực phi con người, chẳng hạn kho lưu trữ hồ sơ hoặc hệ thống xử lý thanh toán. Tuy nhiên, đề bài không xác định cụ thể các hệ thống này.
 
-Assign the cashier to the relevant tasks, such as retrieving the file, checking documents, generating notices, issuing receipts, and allocating the hearing date.
-
-The owner participates in submitting the request and paying outstanding fees. If the owner is modeled in a separate pool, communication and payment interactions can be represented explicitly.
-
-### C. Answer to the Question
-
-Yes, non-human resources may be involved, such as a records repository or payment processing system. However, the scenario does not explicitly identify these systems. The distinction between resources stated in the requirements and resources introduced as modeling assumptions should be maintained.
+Vì vậy, khi xây dựng mô hình cần phân biệt rõ nguồn lực được nêu trực tiếp trong đề với nguồn lực được giả định để phục vụ mục đích mô hình hóa.
 
 ---
 
-# 5. Exercise 3.19 – Court Hearing Preparation
+# Exercise 3.19 – Chuẩn bị hồ sơ cho phiên tòa
 
-## 5.1. Problem Statement
+## 1. Đề bài (Problem Statement)
 
-**Task:** Model the following business process. Use gateways and data objects where needed.
+**Exercise 3.19** Model the following business process. Use gateways and data objects where needed.
 
-In a court each morning the files that have yet to be processed are checked to make sure they are in order for the court hearing that day.
+In a court each morning the files that have yet to be processed are checked to make sure they are in order for the court hearing that day. If some files are missing a search is initiated, otherwise the files can be physically tracked to the intended location. Once all the files are ready, these are handed to the associate. In the meantime the judge's lawlist is distributed to the relevant people. Afterwards, the directions hearings are conducted.
 
-If some files are missing a search is initiated, otherwise the files can be physically tracked to the intended location.
+## 2. Phân tích nghiệp vụ
 
-Once all the files are ready, these are handed to the associate. In the meantime the judge's lawlist is distributed to the relevant people. Afterwards, the directions hearings are conducted.
+### 2.1. Mục tiêu quy trình
 
-## 5.2. Business Process Analysis
+Chuẩn bị đầy đủ hồ sơ cần thiết cho phiên tòa trong ngày, phân phối danh sách công việc của thẩm phán và bảo đảm các hoạt động chuẩn bị hoàn tất trước khi tiến hành phiên điều trần.
 
-### A. Process Objective
+### 2.2. Tác nhân tham gia
 
-Prepare the required case files and distribute the judge's lawlist so that directions hearings can be conducted.
-
-### B. Participants and Responsibilities
-
-| Participant | Responsibility |
+| Tác nhân | Vai trò |
 |---|---|
-| Court Staff | Check files, initiate searches for missing files, and track files to the intended location |
-| Associate | Receives the prepared files |
-| Court Administration or Responsible Staff | Distributes the judge's lawlist to relevant people |
-| Judge or Hearing Personnel | Conducts directions hearings |
+| Nhân viên tòa án | Kiểm tra, tìm kiếm và theo dõi vị trí hồ sơ |
+| Associate | Tiếp nhận hồ sơ đã chuẩn bị |
+| Nhân sự phụ trách phân phối danh sách | Gửi danh sách công việc của thẩm phán |
+| Thẩm phán và nhân sự liên quan | Thực hiện phiên điều trần |
 
-The scenario does not specify all role assignments in detail. Any additional role allocation should be treated as a modeling assumption.
+### 2.3. Đầu vào và đầu ra
 
-### C. Process Inputs and Outputs
-
-| Type | Business Object |
+| Loại | Đối tượng |
 |---|---|
-| Input | Case files requiring processing |
-| Input | Judge's lawlist |
-| Output | Prepared case files |
-| Output | Distributed lawlist |
-| Output | Directions hearings conducted |
+| Đầu vào | Hồ sơ cần xử lý trong ngày |
+| Đầu vào | Danh sách công việc của thẩm phán |
+| Đầu ra | Hồ sơ đã sẵn sàng |
+| Đầu ra | Danh sách công việc đã được phân phối |
+| Đầu ra | Phiên điều trần được thực hiện |
 
-### D. Control Flow Analysis
+### 2.4. Phân tích luồng điều khiển
 
-1. Start the morning preparation process.
-2. Check the case files required for that day's hearings.
-3. Use an exclusive gateway to determine whether files are missing.
-4. If files are missing, initiate a search.
-5. If no files are missing, physically track the files to their intended location.
-6. Ensure that all required files are ready.
-7. Hand the prepared files to the associate.
-8. In parallel with file preparation, distribute the judge's lawlist.
-9. Synchronize the relevant branches before conducting directions hearings.
-10. End the process.
+1. Bắt đầu quy trình chuẩn bị buổi sáng.
+2. Kiểm tra hồ sơ cần sử dụng trong phiên tòa.
+3. Sử dụng Exclusive Gateway để xác định có hồ sơ bị thiếu hay không.
+4. Nếu có hồ sơ thiếu, khởi động hoạt động tìm kiếm.
+5. Nếu không có hồ sơ thiếu, theo dõi và xác định vị trí thực tế của hồ sơ.
+6. Khi toàn bộ hồ sơ đã sẵn sàng, bàn giao cho associate.
+7. Song song với việc chuẩn bị hồ sơ, phân phối danh sách công việc của thẩm phán.
+8. Chờ các nhánh công việc cần thiết hoàn tất.
+9. Tiến hành phiên điều trần.
+10. Kết thúc quy trình.
 
-### E. BPMN Modeling Decisions
+### 2.5. Định hướng mô hình hóa BPMN
 
-- Use an Exclusive Gateway for the missing-file decision.
-- Use a Parallel Gateway to represent the independent file-preparation and lawlist-distribution activities.
-- Use a synchronization gateway before the directions hearings if both branches must be completed first.
-- Represent the case files and lawlist as Data Objects where appropriate.
+- Sử dụng Exclusive Gateway để phân nhánh theo tình trạng thiếu hồ sơ.
+- Sử dụng Parallel Gateway để thể hiện hai luồng công việc có thể diễn ra đồng thời: chuẩn bị hồ sơ và phân phối danh sách công việc.
+- Sử dụng gateway đồng bộ trước phiên điều trần nếu cả hai luồng đều phải hoàn tất.
+- Sử dụng Data Object để biểu diễn hồ sơ và danh sách công việc của thẩm phán.
 
-The file-handling branch must distinguish between the two alternatives described in the scenario. If the search activity requires additional behavior, such as repeatedly checking whether the files have been found, that behavior should only be added if justified by the requirements.
+Không nên tự bổ sung các bước xử lý ngoài đề bài nếu chưa có cơ sở, chẳng hạn quy định hủy phiên tòa hoặc chuyển lịch khi không tìm thấy hồ sơ.
 
 ---
 
-# 6. Exercise 3.20 – Motor Claim Handling
+# Exercise 3.20 – Xử lý yêu cầu bồi thường bảo hiểm xe cơ giới
 
-## 6.1. Problem Statement
+## 1. Đề bài (Problem Statement)
 
-**Task:** Model the following business process. Use pools and lanes where needed.
+**Exercise 3.20** Model the following business process. Use pools and lanes where needed.
 
-The motor claim handling process starts when a customer submits a claim with the relevant documentation.
+The motor claim handling process starts when a customer submits a claim with the relevant documentation. The notification department at the car insurer checks the documents upon completeness and registers the claim. Next, the Handling department picks up the claim and checks the insurance. Then, an assessment is performed. If the assessment is positive, a garage is phoned to authorize the repairs and the payment is scheduled (in this order). Otherwise, the claim is rejected. In any case (whether the outcome is positive or negative), a letter is sent to the customer and the process is considered to be complete.
 
-The notification department at the car insurer checks the documents upon completeness and registers the claim. Next, the Handling department picks up the claim and checks the insurance.
+## 2. Phân tích nghiệp vụ
 
-Then, an assessment is performed. If the assessment is positive, a garage is phoned to authorize the repairs and the payment is scheduled, in this order. Otherwise, the claim is rejected.
+### 2.1. Mục tiêu quy trình
 
-In any case, whether the outcome is positive or negative, a letter is sent to the customer and the process is considered to be complete.
+Tiếp nhận và xử lý yêu cầu bồi thường bảo hiểm xe cơ giới, xác minh bảo hiểm, đánh giá yêu cầu, quyết định chấp thuận hoặc từ chối và thông báo kết quả cho khách hàng.
 
-## 6.2. Business Process Analysis
+### 2.2. Pool và Lane
 
-### A. Process Objective
-
-Process motor insurance claims, verify policy coverage, assess the claim, determine the outcome, and notify the customer.
-
-### B. Pools and Lanes
-
-| BPMN Participant | Suggested Representation |
+| Thành phần | Vai trò |
 |---|---|
-| Customer | Separate pool |
-| Car Insurer | Pool containing internal lanes |
-| Notification Department | Lane within the insurer pool |
-| Handling Department | Lane within the insurer pool |
-| Garage | Separate pool if explicit external interaction is modeled |
+| Customer Pool | Khách hàng gửi yêu cầu và nhận thông báo |
+| Car Insurer Pool | Doanh nghiệp bảo hiểm thực hiện quy trình |
+| Notification Department Lane | Kiểm tra tính đầy đủ của hồ sơ và đăng ký yêu cầu |
+| Handling Department Lane | Kiểm tra bảo hiểm và đánh giá yêu cầu |
+| Garage Pool | Gara nhận liên hệ để xác nhận việc sửa chữa, nếu cần thể hiện tương tác bên ngoài |
 
-### C. Process Inputs and Outputs
+### 2.3. Đầu vào và đầu ra
 
-| Type | Business Object |
+| Loại | Đối tượng |
 |---|---|
-| Input | Motor insurance claim |
-| Input | Supporting documentation |
-| Input | Insurance policy information |
-| Output | Registered claim |
-| Output | Claim assessment result |
-| Output | Repair authorization communication, where approved |
-| Output | Scheduled payment, where approved |
-| Output | Claim rejection, where not approved |
-| Output | Customer notification letter |
+| Đầu vào | Yêu cầu bồi thường |
+| Đầu vào | Tài liệu liên quan |
+| Đầu vào | Thông tin hợp đồng bảo hiểm |
+| Đầu ra | Yêu cầu đã đăng ký |
+| Đầu ra | Kết quả đánh giá |
+| Đầu ra | Xác nhận cho phép sửa chữa |
+| Đầu ra | Lịch thanh toán |
+| Đầu ra | Kết quả từ chối yêu cầu, nếu không được chấp thuận |
+| Đầu ra | Thư thông báo gửi khách hàng |
 
-### D. Main Activities
+### 2.4. Các hoạt động chính
 
-1. Customer submits the claim and supporting documentation.
-2. Notification Department checks document completeness.
-3. Notification Department registers the claim.
-4. Handling Department retrieves the claim.
-5. Handling Department checks insurance coverage.
-6. Assess the claim.
-7. Determine whether the assessment is positive.
-8. If positive, phone the garage to authorize repairs.
-9. Schedule payment after repair authorization.
-10. If negative, reject the claim.
-11. Send a letter to the customer regardless of the outcome.
-12. End the process.
+1. Khách hàng gửi yêu cầu bồi thường kèm tài liệu.
+2. Bộ phận Notification kiểm tra tính đầy đủ của tài liệu.
+3. Đăng ký yêu cầu bồi thường.
+4. Bộ phận Handling tiếp nhận yêu cầu.
+5. Kiểm tra thông tin bảo hiểm.
+6. Đánh giá yêu cầu bồi thường.
+7. Nếu kết quả tích cực, gọi điện cho gara để cho phép sửa chữa.
+8. Sau đó lên lịch thanh toán.
+9. Nếu kết quả tiêu cực, từ chối yêu cầu.
+10. Trong cả hai trường hợp, gửi thư thông báo cho khách hàng.
+11. Kết thúc quy trình.
 
-### E. Business Rules
+### 2.5. Quy tắc nghiệp vụ
 
-| ID | Business Rule |
+| Mã | Quy tắc |
 |---|---|
-| BR-01 | The process starts when a customer submits a claim with supporting documentation. |
-| BR-02 | The Notification Department checks document completeness and registers the claim. |
-| BR-03 | The Handling Department checks the insurance before the claim assessment. |
-| BR-04 | A positive assessment leads to garage authorization followed by payment scheduling. |
-| BR-05 | A negative assessment leads to claim rejection. |
-| BR-06 | A customer notification letter is sent for both positive and negative outcomes. |
+| BR-01 | Quy trình bắt đầu khi khách hàng gửi yêu cầu kèm tài liệu liên quan. |
+| BR-02 | Bộ phận Notification kiểm tra tính đầy đủ và đăng ký yêu cầu. |
+| BR-03 | Bộ phận Handling kiểm tra bảo hiểm trước khi đánh giá yêu cầu. |
+| BR-04 | Nếu đánh giá tích cực, phải liên hệ gara để cho phép sửa chữa trước khi lên lịch thanh toán. |
+| BR-05 | Nếu đánh giá tiêu cực, yêu cầu bị từ chối. |
+| BR-06 | Khách hàng luôn nhận được thư thông báo kết quả. |
 
-### F. Control Flow Analysis
+### 2.6. Định hướng mô hình hóa BPMN
 
-The insurer's internal workflow can be modeled in a single pool with separate lanes for the Notification Department and Handling Department.
-
-Use an Exclusive Gateway after claim assessment:
-
-- **Positive:** Phone the garage, authorize repairs, then schedule payment.
-- **Negative:** Reject the claim.
-
-The alternative paths should merge before the customer letter is sent, ensuring that both outcomes lead to the same final notification activity.
-
-Use Message Flows between separate pools for interactions with the customer and, where appropriate, the garage. Sequence Flows must remain within a pool.
+- Sử dụng một pool cho doanh nghiệp bảo hiểm và các lane cho những bộ phận nội bộ.
+- Có thể dùng pool riêng cho khách hàng và gara để thể hiện giao tiếp giữa các tổ chức.
+- Dùng Exclusive Gateway sau hoạt động đánh giá.
+- Nhánh tích cực gồm hai hoạt động tuần tự: cho phép sửa chữa, sau đó lên lịch thanh toán.
+- Nhánh tiêu cực thực hiện hoạt động từ chối yêu cầu.
+- Hai nhánh hội tụ trước hoạt động gửi thư thông báo khách hàng.
+- Sử dụng Message Flow cho giao tiếp giữa các pool và Sequence Flow cho luồng bên trong cùng một pool.
 
 ---
 
-# 7. Exercise 3.21 – Insurance Claim Assessment
+# Exercise 3.21 – Đánh giá yêu cầu bồi thường bảo hiểm
 
-## 7.1. Problem Statement
+## 1. Đề bài (Problem Statement)
 
-**Task:** Model the following business process. Use pools and lanes where needed.
+**Exercise 3.21** Model the following business process. Use pools and lanes where needed.
 
-When a claim is received, a claims officer first checks if the claimant is insured.
+When a claim is received, a claims officer first checks if the claimant is insured. If not, the claimant is informed that the claim must be rejected by sending an automatic notification via an SAP system. Otherwise, a senior claims officer evaluates the severity of the claim. Based on the outcome (simple or complex claims), the relevant forms are sent to the claimant, again using the SAP system. Once the forms are returned, they are checked for completeness by the claims officer. If the forms provide all relevant details, the claim is registered in the claims management system, and the process ends. Otherwise, the claimant is informed to update the forms via the SAP system. Upon reception of the updated forms, they are checked again by the claims officer to see if the details have been provided.
 
-If not, the claimant is informed that the claim must be rejected by sending an automatic notification via an SAP system.
+## 2. Phân tích nghiệp vụ
 
-Otherwise, a senior claims officer evaluates the severity of the claim. Based on the outcome, simple or complex claims, the relevant forms are sent to the claimant, again using the SAP system.
+### 2.1. Mục tiêu quy trình
 
-Once the forms are returned, they are checked for completeness by the claims officer. If the forms provide all relevant details, the claim is registered in the claims management system, and the process ends. Otherwise, the claimant is informed to update the forms via the SAP system.
+Xác minh tư cách bảo hiểm của người yêu cầu, phân loại mức độ phức tạp của yêu cầu, thu thập thông tin đầy đủ và đăng ký yêu cầu hợp lệ vào hệ thống quản lý khiếu nại.
 
-Upon reception of the updated forms, they are checked again by the claims officer to see if the details have been provided.
+### 2.2. Pool và Lane
 
-## 7.2. Business Process Analysis
-
-### A. Process Objective
-
-Determine claimant eligibility, classify claim severity, collect complete claim information, and register eligible claims.
-
-### B. Pools and Lanes
-
-| BPMN Participant | Suggested Representation |
+| Thành phần | Vai trò |
 |---|---|
-| Claimant | Separate pool |
-| Insurance Organization | Pool containing internal lanes |
-| Claims Officer | Lane |
-| Senior Claims Officer | Lane |
-| SAP System | System resource or service task, not necessarily a separate pool |
-| Claims Management System | System resource or service task, not necessarily a separate pool |
+| Claimant Pool | Người gửi yêu cầu và cung cấp biểu mẫu |
+| Insurance Organization Pool | Tổ chức bảo hiểm xử lý yêu cầu |
+| Claims Officer Lane | Kiểm tra tư cách bảo hiểm và tính đầy đủ của biểu mẫu |
+| Senior Claims Officer Lane | Đánh giá mức độ nghiêm trọng của yêu cầu |
+| SAP System | Hệ thống hỗ trợ gửi thông báo và biểu mẫu |
+| Claims Management System | Hệ thống lưu trữ và đăng ký yêu cầu |
 
-SAP and the claims management system should not automatically be modeled as independent pools. Use service tasks or other appropriate task types when they support activities performed within the insurance organization's process.
+SAP và hệ thống quản lý khiếu nại có thể được thể hiện dưới dạng nguồn lực hệ thống hoặc các tác vụ dịch vụ trong quy trình. Không nhất thiết phải tạo pool riêng cho từng hệ thống.
 
-### C. Process Inputs and Outputs
+### 2.3. Đầu vào và đầu ra
 
-| Type | Business Object |
+| Loại | Đối tượng |
 |---|---|
-| Input | Insurance claim |
-| Input | Insurance eligibility information |
-| Input | Claim severity information |
-| Input | Claim forms |
-| Output | Automatic rejection notification |
-| Output | Simple-claim or complex-claim forms |
-| Output | Updated claim forms |
-| Output | Registered claim |
+| Đầu vào | Yêu cầu bồi thường |
+| Đầu vào | Thông tin xác minh bảo hiểm |
+| Đầu vào | Thông tin đánh giá mức độ nghiêm trọng |
+| Đầu vào | Biểu mẫu đã điền |
+| Đầu ra | Thông báo yêu cầu bị từ chối |
+| Đầu ra | Biểu mẫu tương ứng với yêu cầu đơn giản hoặc phức tạp |
+| Đầu ra | Yêu cầu cập nhật biểu mẫu |
+| Đầu ra | Yêu cầu đã được đăng ký trong hệ thống |
 
-### D. Business Rules
+### 2.4. Quy tắc nghiệp vụ
 
-| ID | Business Rule |
+| Mã | Quy tắc |
 |---|---|
-| BR-01 | The Claims Officer checks insurance eligibility first. |
-| BR-02 | If the claimant is not insured, the process sends an automatic notification stating that the claim must be rejected. |
-| BR-03 | If the claimant is insured, the Senior Claims Officer evaluates claim severity. |
-| BR-04 | The appropriate forms are sent according to whether the claim is simple or complex. |
-| BR-05 | The Claims Officer checks returned forms for completeness. |
-| BR-06 | Complete forms lead to claim registration. |
-| BR-07 | Incomplete forms lead to a request for updated information. |
-| BR-08 | Updated forms are checked again for completeness. |
+| BR-01 | Phải kiểm tra tư cách bảo hiểm trước khi thực hiện các bước tiếp theo. |
+| BR-02 | Nếu người yêu cầu không được bảo hiểm, gửi thông báo tự động về việc yêu cầu phải bị từ chối. |
+| BR-03 | Nếu người yêu cầu được bảo hiểm, nhân viên cấp cao đánh giá mức độ nghiêm trọng. |
+| BR-04 | Biểu mẫu được gửi dựa trên phân loại yêu cầu đơn giản hoặc phức tạp. |
+| BR-05 | Nhân viên kiểm tra tính đầy đủ của biểu mẫu sau khi nhận lại. |
+| BR-06 | Nếu biểu mẫu đầy đủ, đăng ký yêu cầu vào hệ thống quản lý khiếu nại. |
+| BR-07 | Nếu biểu mẫu chưa đầy đủ, yêu cầu người nộp cập nhật. |
+| BR-08 | Biểu mẫu cập nhật được kiểm tra lại. |
 
-### E. Control Flow Analysis
+### 2.5. Phân tích luồng điều khiển
 
-1. Receive the claim.
-2. Check whether the claimant is insured.
-3. If not insured, send an automatic notification through SAP and end the process.
-4. If insured, evaluate claim severity.
-5. Select the relevant forms for a simple or complex claim.
-6. Send the forms through SAP.
-7. Wait for the claimant to return the forms.
-8. Check the forms for completeness.
-9. If complete, register the claim in the claims management system and end the process.
-10. If incomplete, request updated forms through SAP.
-11. Wait for the updated forms.
-12. Check the updated forms again.
+1. Nhận yêu cầu bồi thường.
+2. Nhân viên kiểm tra người yêu cầu có được bảo hiểm hay không.
+3. Nếu không được bảo hiểm, gửi thông báo tự động qua SAP và kết thúc.
+4. Nếu được bảo hiểm, nhân viên cấp cao đánh giá mức độ nghiêm trọng.
+5. Phân loại yêu cầu thành đơn giản hoặc phức tạp.
+6. Gửi biểu mẫu phù hợp qua SAP.
+7. Chờ người yêu cầu gửi lại biểu mẫu.
+8. Kiểm tra tính đầy đủ của biểu mẫu.
+9. Nếu đầy đủ, đăng ký yêu cầu vào hệ thống quản lý khiếu nại và kết thúc.
+10. Nếu chưa đầy đủ, gửi yêu cầu cập nhật biểu mẫu qua SAP.
+11. Chờ nhận biểu mẫu cập nhật.
+12. Kiểm tra lại biểu mẫu.
 
-### F. BPMN Modeling Decisions
+### 2.6. Định hướng mô hình hóa BPMN
 
-- Use an Exclusive Gateway for insurance eligibility.
-- Use an Exclusive Gateway for the simple-versus-complex claim classification.
-- Use an Exclusive Gateway for form completeness.
-- Represent the return of forms and updated forms using appropriate message or intermediate events.
-- Model the update-and-recheck path as a loop.
-- Use a service task or equivalent system-supported activity for SAP notifications and claim registration, depending on the modeling convention adopted.
+- Sử dụng Exclusive Gateway để kiểm tra tư cách bảo hiểm.
+- Sử dụng Exclusive Gateway để phân loại yêu cầu đơn giản hoặc phức tạp.
+- Sử dụng Exclusive Gateway để kiểm tra tính đầy đủ của biểu mẫu.
+- Thể hiện việc gửi và nhận biểu mẫu bằng các tác vụ và sự kiện phù hợp.
+- Dùng luồng quay lại để mô tả vòng lặp cập nhật biểu mẫu.
+- Dùng tác vụ dịch vụ cho hoạt động được hỗ trợ bởi SAP và hệ thống quản lý khiếu nại, tùy quy ước mô hình hóa.
 
-**Modeling consideration:** The exercise does not explicitly state what happens if the updated forms are still incomplete. The diagram should show the repeated check without inventing a new rejection outcome. The loop can continue until the required details are provided unless additional requirements specify otherwise.
+**Lưu ý:** Đề bài chưa nêu kết quả cụ thể nếu biểu mẫu vẫn thiếu thông tin sau lần cập nhật. Không nên tự bổ sung nhánh từ chối yêu cầu. Có thể thể hiện vòng lặp kiểm tra lại cho đến khi đủ thông tin, đồng thời ghi rõ đây là cách diễn giải quy trình từ mô tả hiện có.
 
 ---
 
-# 8. Exercise 3.23 – Prescription Fulfillment
+# Exercise 3.23 – Quy trình cấp phát thuốc theo đơn
 
-## 8.1. Problem Statement
+## 1. Đề bài (Problem Statement)
 
-**Task 1:** Model the prescription fulfillment process described in Exercise 1.6 (page 30). Use subprocesses where required, and nest them appropriately.
+**Exercise 3.23**
 
-**Task 2:** Determine whether any subprocess can potentially be shared with other business processes of the same pharmacy or with other pharmacies, for example as part of a consortium.
+1. Model the prescription fulfillment process described in Exercise 1.6 (page 30). Use sub-processes where required, and nest them appropriately.
 
-**Source limitation:** The detailed description of Exercise 1.6 is not included in this repository's current problem statement. The complete original scenario must be added before a detailed, evidence-based process analysis can be finalized.
+2. Is there any sub-process that can potentially be shared with other business processes of the same pharmacy, or of other pharmacies, e.g. as part of a consortium?
 
-## 8.2. Business Process Analysis
+## 2. Phân tích nghiệp vụ
 
-### A. Analysis Objective
+### 2.1. Mục tiêu
 
-Decompose the prescription fulfillment process into manageable subprocesses and identify opportunities for reuse.
+Mô hình hóa quy trình thực hiện đơn thuốc bằng BPMN, phân rã quy trình thành các subprocess phù hợp và xác định những subprocess có khả năng tái sử dụng.
 
-### B. Information Required
+### 2.2. Thông tin cần xác định từ đề gốc
 
-Before modeling the complete process, identify:
+Đề bài tham chiếu Exercise 1.6 ở trang 30 nhưng chưa bao gồm mô tả chi tiết quy trình. Cần bổ sung nội dung đề gốc trước khi hoàn thiện phân tích.
 
-- How a prescription is received.
-- Which checks are required before fulfillment.
-- Which participants perform the activities.
-- How medicines are prepared, dispensed, and handed over.
-- Whether payment, insurance, or inventory checks are included.
-- How exceptions are handled.
-- What conditions define successful completion.
+Các thông tin cần làm rõ gồm:
 
-These details must be taken from Exercise 1.6 rather than assumed.
+- Cách tiếp nhận đơn thuốc.
+- Các bước xác minh đơn thuốc.
+- Các tác nhân tham gia.
+- Quy trình chuẩn bị và cấp phát thuốc.
+- Các hoạt động kiểm tra hàng tồn kho hoặc thanh toán, nếu có.
+- Những trường hợp ngoại lệ.
+- Điều kiện kết thúc quy trình.
 
-### C. Subprocess Decomposition
+### 2.3. Phân rã quy trình
 
-The subprocess structure should be determined after reviewing the complete scenario. A candidate structure may include prescription intake, prescription validation, medicine preparation, and dispensing, but these are preliminary modeling possibilities rather than confirmed requirements.
+Sau khi có đầy đủ đề bài, cần xác định những nhóm hoạt động đủ phức tạp hoặc có ý nghĩa độc lập để đưa vào subprocess.
 
-### D. Potentially Reusable Subprocesses
+Các nhóm hoạt động như tiếp nhận đơn thuốc, xác minh thông tin, chuẩn bị thuốc và cấp phát thuốc chỉ là những khả năng cần xem xét, chưa phải cấu trúc đã được xác nhận từ đề gốc.
 
-Depending on the original requirements, potentially reusable subprocesses could include:
+### 2.4. Khả năng tái sử dụng subprocess
 
-- Prescription data validation.
-- Medicine availability checking.
-- Inventory management.
-- Payment processing.
-- Customer notification.
-- Prescription record management.
+Tùy theo nội dung thực tế của Exercise 1.6, các subprocess có thể được xem xét để tái sử dụng bao gồm:
 
-The reuse analysis should distinguish between subprocesses that are genuinely common across workflows and activities that require pharmacy-specific rules or clinical decisions.
+- Xác minh dữ liệu đơn thuốc.
+- Kiểm tra tình trạng thuốc trong kho.
+- Quản lý tồn kho.
+- Xử lý thanh toán.
+- Thông báo cho khách hàng.
+- Quản lý hồ sơ đơn thuốc.
 
-### E. Reuse Across Pharmacies
+Việc tái sử dụng cần dựa trên sự tương đồng thực sự về quy trình và quy tắc nghiệp vụ, không chỉ vì các hoạt động có tên gọi giống nhau.
 
-A shared subprocess could be implemented as a standardized procedure or service used by multiple pharmacies. A consortium might share selected administrative or technical processes, provided that the relevant operational, regulatory, and data-access requirements are satisfied.
+### 2.5. Khả năng dùng chung giữa các nhà thuốc
 
-The final answer should identify specific reusable subprocesses and justify each choice using the actual Exercise 1.6 scenario.
+Một subprocess có thể được chuẩn hóa để sử dụng tại nhiều quy trình trong cùng nhà thuốc hoặc giữa các nhà thuốc trong một liên minh.
+
+Tuy nhiên, cần phân biệt các hoạt động hành chính có thể dùng chung với những hoạt động đòi hỏi quy tắc chuyên môn, dữ liệu và điều kiện vận hành riêng.
+
+Kết luận cuối cùng về các subprocess có thể dùng chung cần được đưa ra sau khi phân tích đầy đủ đề bài Exercise 1.6.
 
 ---
 
-# 9. Overall Learning Outcomes
+# Tổng kết
 
-The exercises develop practical skills in:
+Thông qua các bài tập, repository tập trung rèn luyện những kỹ năng sau:
 
-- Translating textual requirements into BPMN diagrams.
-- Identifying participants, responsibilities, inputs, outputs, and business rules.
-- Modeling conditional and parallel control flows.
-- Representing data objects and resource assignments.
-- Modeling external communications using pools and Message Flows.
-- Handling loops, waiting states, and rework.
-- Decomposing complex workflows into nested subprocesses.
-- Evaluating opportunities for process reuse.
+- Phân tích yêu cầu nghiệp vụ từ mô tả bằng văn bản.
+- Xác định tác nhân, hoạt động, đầu vào, đầu ra và quy tắc nghiệp vụ.
+- Mô hình hóa luồng tuần tự, luồng song song và luồng điều kiện.
+- Sử dụng Gateway để thể hiện các điểm quyết định.
+- Thể hiện dữ liệu nghiệp vụ bằng Data Objects và Data Associations.
+- Phân chia trách nhiệm bằng Pools và Lanes.
+- Mô hình hóa vòng lặp xử lý và các hoạt động chờ.
+- Phân rã quy trình bằng Subprocesses.
+- Xác định cơ hội chuẩn hóa và tái sử dụng quy trình.
 
-## 10. Repository Scope
-
-This repository is intended for educational purposes and as a practical record of BPMN modeling and business process analysis.
-
-Each exercise should include the problem statement, process analysis, BPMN diagram, and any assumptions made during modeling. The analysis should remain traceable to the original scenario, with assumptions clearly distinguished from stated requirements.
+Repository phục vụ mục đích học tập và xây dựng hồ sơ năng lực về Business Process Modeling và Business Analysis. Các giả định trong quá trình mô hình hóa cần được ghi rõ, tách biệt với yêu cầu được nêu trực tiếp trong đề bài.
