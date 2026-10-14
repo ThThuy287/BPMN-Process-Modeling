@@ -85,29 +85,25 @@ Luồng quy trình được thiết kế theo 5 giai đoạn liên kết chặt 
 
 Mở rộng mô hình của Exercise 3.16 bằng cách thể hiện các tài liệu và thông tin nghiệp vụ được sử dụng hoặc tạo ra trong quy trình.
 
-### 2.2. Các đối tượng nghiệp vụ
+### 2.2. Các đối tượng nghiệp vụ (Business Objects)
 
-| Đối tượng | Mục đích sử dụng |
-|---|---|
-| Yêu cầu bồi thường | Đầu vào để khởi tạo quy trình |
-| Hồ sơ tài sản | Cơ sở để kiểm tra thông tin |
-| Mô tả tài sản | Dùng để đối chiếu với yêu cầu bồi thường |
-| Thông tin thanh toán | Xác định tình trạng thanh toán phí |
-| Biên lai | Kết quả của hoạt động lập biên lai phí bổ sung |
-| Thông báo phí | Kết quả của hoạt động yêu cầu thanh toán |
-| Thông tin ngày xét xử | Kết quả của hoạt động bố trí lịch xét xử |
+| Đối tượng | Mục đích sử dụng trong quy trình |
+| :--- | :--- |
+| **Yêu cầu bồi thường** | Là tài liệu đầu vào để khởi tạo quy trình, được sử dụng trực tiếp trong hoạt động tiếp nhận yêu cầu. |
+| **Hồ sơ tài sản** | Là tài liệu đầu vào chứa mô tả tài sản, làm cơ sở để đối chiếu và kiểm tra tính hợp lệ của yêu cầu |
+| **Biên lai thanh toán** | Là kết quả đầu ra của hoạt động lập biên lai khi chủ sở hữu đã thanh toán các khoản phí bổ sung phát sinh |
+| **Thông báo phí** | Là kết quả đầu ra của hoạt động tạo thông báo yêu cầu thanh toán trong trường hợp phí chưa được nộp |
+| **Danh sách án của thẩm phán** | Là kho dữ liệu lưu trữ thông tin ngày xét xử, được cập nhật sau khi hoàn tất hoạt động bố trí lịch xét xử |
+
+*(Lưu ý: "Thông tin thanh toán" được xử lý như một điều kiện rẽ nhánh sau bước "Check fee payment" chứ không phải là một đối tượng dữ liệu độc lập trên sơ đồ*
 
 ### 2.3. Định hướng mô hình hóa
 
-Sử dụng Data Object và Data Association để biểu diễn mối quan hệ giữa các hoạt động và dữ liệu.
-
-- Yêu cầu bồi thường được sử dụng trong quá trình tiếp nhận và kiểm tra.
-- Hồ sơ tài sản được sử dụng để xác minh thông tin.
-- Thông tin thanh toán được sử dụng khi xác định nhánh xử lý phí.
-- Biên lai và thông báo phí là đầu ra của các hoạt động tương ứng.
-- Thông tin ngày xét xử được tạo ra sau khi bố trí lịch.
-
-Cần phân biệt Sequence Flow, thể hiện thứ tự thực hiện hoạt động, với Data Association, thể hiện quan hệ sử dụng hoặc tạo dữ liệu.
+Mô hình sử dụng các ký hiệu Đối tượng dữ liệu và Liên kết dữ liệu để biểu diễn mối quan hệ tương tác giữa các hoạt động và luồng thông tin:
+* **Dữ liệu đầu vào:** Yêu cầu bồi thường và Hồ sơ tài sản được sử dụng làm đầu vào cho các bước tiếp nhận và kiểm tra hồ sơ.
+* **Dữ liệu đầu ra:** Biên lai thanh toán và Thông báo phí được tạo ra từ các hoạt động xử lý tài chính tương ứng.
+* **Lưu trữ dữ liệu:** Thông tin lịch xét xử được ghi nhận vào kho dữ liệu của thẩm phán ở cuối quy trình.
+* **Sự phân biệt luồng:** Sơ đồ thể hiện sự tách biệt rõ ràng giữa **Sequence Flow** (các mũi tên nét liền chỉ định thứ tự thực hiện từ "Receive request" đến "Allocate hearing date") và **Data Association** (các mũi tên nét đứt thể hiện việc truy xuất hoặc tạo mới các tệp tài liệu).
 
 ---
 
@@ -165,36 +161,33 @@ Chuẩn bị đầy đủ hồ sơ cần thiết cho phiên tòa trong ngày, ph
 
 ### 2.3. Đầu vào và đầu ra
 
-| Loại | Đối tượng |
-|---|---|
-| Đầu vào | Hồ sơ cần xử lý trong ngày |
-| Đầu vào | Danh sách công việc của thẩm phán |
-| Đầu ra | Hồ sơ đã sẵn sàng |
-| Đầu ra | Danh sách công việc đã được phân phối |
-| Đầu ra | Phiên điều trần được thực hiện |
+| Loại | Đối tượng | Mô tả |
+| :--- | :--- | :--- |
+| Đầu vào | Files | Được sử dụng làm tài liệu đầu vào cho hoạt động "Check files". |
+| Đầu vào | Judge's lawlist | Được sử dụng làm tài liệu đầu vào cho hoạt động "Distribute lawlist". |
+
+*(Sơ đồ không biểu diễn các đối tượng dữ liệu đầu ra cụ thể bằng ký hiệu Data Object, kết quả cuối cùng chỉ được ghi nhận bằng sự kiện kết thúc "Process completed".)*
 
 ### 2.4. Phân tích luồng điều khiển
 
-1. Bắt đầu quy trình chuẩn bị buổi sáng.
-2. Kiểm tra hồ sơ cần sử dụng trong phiên tòa.
-3. Sử dụng Exclusive Gateway để xác định có hồ sơ bị thiếu hay không.
-4. Nếu có hồ sơ thiếu, khởi động hoạt động tìm kiếm.
-5. Nếu không có hồ sơ thiếu, theo dõi và xác định vị trí thực tế của hồ sơ.
-6. Khi toàn bộ hồ sơ đã sẵn sàng, bàn giao cho associate.
-7. Song song với việc chuẩn bị hồ sơ, phân phối danh sách công việc của thẩm phán.
-8. Chờ các nhánh công việc cần thiết hoàn tất.
-9. Tiến hành phiên điều trần.
-10. Kết thúc quy trình.
+1. Bắt đầu quy trình bằng sự kiện thời gian vào mỗi buổi sáng.
+2. Thực hiện hoạt động kiểm tra hồ sơ dựa trên dữ liệu.
+3. Sử dụng cổng song song để tách luồng quy trình thành hai nhánh thực hiện đồng thời:
+   - **Nhánh 1 (Xử lý hồ sơ và danh sách án):** Sử dụng cổng rẽ nhánh độc quyền để kiểm tra tình trạng. 
+     - Nếu thiếu hồ sơ, tiến hành tìm kiếm. 
+     - Nếu không, thực hiện theo dõi vị trí vật lý của hồ sơ. 
+     - Sau khi luồng rẽ nhánh này hội tụ lại, tiếp tục thực hiện phân phối danh sách án với dữ liệu "Judge's lawlist".
+   - **Nhánh 2 (Bàn giao):** Tiến hành bàn giao cho cộng sự song song với Nhánh 1.
+4. Sử dụng cổng song song để đồng bộ, chờ cả hai nhánh công việc hoàn tất.
+5. Tiến hành phiên điều trần.
+6. Kết thúc quy trình.
 
 ### 2.5. Định hướng mô hình hóa BPMN
 
-- Sử dụng Exclusive Gateway để phân nhánh theo tình trạng thiếu hồ sơ.
-- Sử dụng Parallel Gateway để thể hiện hai luồng công việc có thể diễn ra đồng thời: chuẩn bị hồ sơ và phân phối danh sách công việc.
-- Sử dụng gateway đồng bộ trước phiên điều trần nếu cả hai luồng đều phải hoàn tất.
-- Sử dụng Data Object để biểu diễn hồ sơ và danh sách công việc của thẩm phán.
-
-Không nên tự bổ sung các bước xử lý ngoài đề bài nếu chưa có cơ sở, chẳng hạn quy định hủy phiên tòa hoặc chuyển lịch khi không tìm thấy hồ sơ.
-
+- **Sự kiện:** Sử dụng Timer Start Event để thể hiện quy trình được kích hoạt định kỳ mỗi sáng.
+- **Cổng song song:** Được dùng để tách và gộp hai luồng công việc diễn ra cùng lúc là luồng xử lý/phân phối tài liệu và luồng bàn giao cho cộng sự.
+- **Cổng độc quyền:** Được đặt lồng bên trong nhánh song song để xử lý các tình huống loại trừ lẫn nhau (hồ sơ bị thiếu hoặc không thiếu).
+- **Đối tượng dữ liệu:** Sử dụng ký hiệu Data Object kèm liên kết dữ liệu để chỉ định rõ "Files" và "Judge's lawlist" cung cấp thông tin cho các hoạt động tương ứng. Không tự ý thêm các bước xử lý lỗi (như hủy phiên tòa) nếu sơ đồ không mô tả.
 ---
 
 # Exercise 3.20 – Xử lý yêu cầu bồi thường bảo hiểm xe cơ giới
