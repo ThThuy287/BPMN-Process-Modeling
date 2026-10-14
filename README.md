@@ -18,23 +18,11 @@ Mô hình hóa luồng kiểm soát (control flow) của quy trình yêu cầu b
 | Hoạt động / Cổng rẽ nhánh | Mục đích sử dụng |
 | --- | --- |
 | **Receive request** | Tiếp nhận yêu cầu bồi thường từ chủ nhà để khởi tạo luồng xử lý.
-
- |
 | **Check request & Check fee payment** | Kiểm tra tính hợp lệ của hồ sơ và xác minh tình trạng thanh toán lệ phí.
-
- |
 | **Gateway: Fees paid / Fees not paid** | Phân luồng quy trình dựa trên kết quả kiểm tra phí. Chuyển hướng sang đòi nợ (Fees not paid) hoặc tiếp tục quy trình (Fees paid).
-
- |
 | **Produce fees notice & Receive payment** | Phát hành thông báo nợ phí và chờ nhận thanh toán bổ sung từ chủ nhà.
-
- |
 | **Gateway: Phụ phí (Additional fees)** | Kiểm tra xem có phát sinh phụ phí đã được đóng hay không để thực hiện tạo biên lai (Generate receipt for additional fees).
-
- |
 | **Allocate hearing date** | Bố trí lịch xét xử, hoàn tất thủ tục và kết thúc quy trình.
-
- |
 
 **2.3. Định hướng mô hình hóa**
 Sử dụng Sequence Flow và Exclusive Gateway (X) để kiểm soát chặt chẽ đường đi của quy trình theo các điều kiện logic.
