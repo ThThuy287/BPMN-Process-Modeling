@@ -69,5 +69,5 @@ Luồng quy trình được thiết kế theo 5 giai đoạn liên kết chặt 
 | Bố trí ngày xét xử | **Task** (User Task) | Tác vụ chốt hạ quy trình. |
 | Hoàn tất bố trí lịch | **End Event** | Điểm kết thúc thành công của luồng nghiệp vụ. |
 
-
+## 3. Ảnh sơ đồ
 <img width="4536" height="1200" alt="Bai3 16_T139" src="https://github.com/user-attachments/assets/cd397d35-4e54-4eac-b2fa-1a50f266e0ea" />
