@@ -1,0 +1,93 @@
+{
+  "components": [
+    {
+      "label": "Mã đơn hàng",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1teotje",
+        "columns": null
+      },
+      "id": "Field_1u21jgg",
+      "key": "maDonHang"
+    },
+    {
+      "label": "Tên người nhận",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_13xrcly",
+        "columns": null
+      },
+      "id": "Field_1cjlsai",
+      "key": "tenNguoiNhan"
+    },
+    {
+      "label": "Địa chỉ",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_19pve32",
+        "columns": null
+      },
+      "id": "Field_1rtv9wd",
+      "key": "DiaChi"
+    },
+    {
+      "label": "SĐT",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0blqour",
+        "columns": null
+      },
+      "id": "Field_1os9lqp",
+      "key": "Sdt"
+    },
+    {
+      "label": "Tình trạng giao",
+      "values": [
+        {
+          "label": "Thành công",
+          "value": "ThanhCong"
+        },
+        {
+          "label": "Thất bại",
+          "value": "ThatBai"
+        }
+      ],
+      "type": "radio",
+      "layout": {
+        "row": "Row_0u8ztpt",
+        "columns": null
+      },
+      "id": "Field_0trtgpb",
+      "key": "TinhTrangGiao"
+    },
+    {
+      "label": "Tình trạng Hàng ",
+      "values": [
+        {
+          "label": "Nguyên vẹn",
+          "value": "NguyenVen"
+        },
+        {
+          "label": "Lỗi",
+          "value": "Loi"
+        }
+      ],
+      "type": "radio",
+      "layout": {
+        "row": "Row_1r1lxls",
+        "columns": null
+      },
+      "id": "Field_0x9ihc9",
+      "key": "TinhTrangHang"
+    }
+  ],
+  "type": "default",
+  "id": "Form_0bfw52r",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.44.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "schemaVersion": 19
+}
