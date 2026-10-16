@@ -13,13 +13,13 @@
 ## Mục lục
 
 1. [Tổng quan dự án](#1-tổng-quan-dự-án)
-2. [Mục tiêu dự án](https://www.google.com/search?q=%232-m%E1%BB%A5c-ti%C3%AAu-d%E1%BB%B1-%C3%A1n)
-3. [Danh sách quy trình toàn hệ thống](https://www.google.com/search?q=%233-danh-s%C3%A1ch-quy-tr%C3%ACnh-to%C3%A0n-h%E1%BB%87-th%E1%BB%91ng)
-4. [Phương pháp phân tích và mô hình hóa](https://www.google.com/search?q=%234-ph%C6%B0%C6%A1ng-ph%C3%A1p-ph%C3%A2n-t%C3%ADch-v%C3%A0-m%C3%B4-h%C3%ACnh-h%C3%B3a)
-5. [Quy trình phụ trách: QT01 - Tiếp nhận và phân luồng đơn hàng](https://www.google.com/search?q=%235-quy-tr%C3%ACnh-ph%E1%BB%A5-tr%C3%A1ch-qt01---ti%E1%BA%BFp-nh%E1%BA%ADn-v%C3%A0-ph%C3%A2n-lu%E1%BB%93ng-%C4%91%C6%A1n-h%C3%A0ng)
-6. [Kiểm thử và minh chứng](https://www.google.com/search?q=%236-ki%E1%BB%83m-th%E1%BB%AD-v%C3%A0-minh-ch%E1%BB%A9ng)
-7. [Công cụ và tài nguyên](https://www.google.com/search?q=%237-c%C3%B4ng-c%E1%BB%A5-v%C3%A0-t%C3%A0i-nguy%C3%AAn)
-8. [Cấu trúc repository](https://www.google.com/search?q=%239-c%E1%BA%A5u-tr%C3%BAc-repository)
+2. [Mục tiêu dự án](#2-mục-tiêu-dự-án)
+3. [Danh sách quy trình toàn hệ thống](#3-danh-sách-quy-trình-toàn-hệ-thống)
+4. [Phương pháp phân tích và mô hình hóa](#4-phương-pháp-phân-tích-và-mô-hình-hóa)
+5. [Quy trình phụ trách: QT01 - Tiếp nhận và phân luồng đơn hàng](#5-quy-trình-phụ-trách-qt01---tiếp-nhận-và-phân-luồng-đơn-hàng)
+6. [Kiểm thử](#6-kiểm-thử)
+7. [Công cụ và tài nguyên](#7-công-cụ-và-tài-nguyên)
+8. [Cấu trúc repository](#8-cấu-trúc-repository)
 
 ---
 
@@ -90,7 +90,7 @@ Dự án áp dụng phương pháp luận BPM với vòng đời tinh gọn:
 * **User Tasks:** Được gắn `Form Ref` (vd: `Form_TTLienHe`) để nhân viên nhập liệu trên giao diện Camunda Tasklist.
 * **Event-based Gateway & Boundary Timer:** Dùng để rẽ nhánh quá trình chờ. Nhánh 1 gắn Timer `PT15S` (demo 15 giây thay vì 1 giờ). Nhánh 2 gắn Message Catch Event `Msg_KhachHangHuyDon` (được trigger bởi script API `huydon.js`).
 
-## 6. Kiểm thử và minh chứng
+## 6. Kiểm thử
 
 ### Video chạy thử
 
