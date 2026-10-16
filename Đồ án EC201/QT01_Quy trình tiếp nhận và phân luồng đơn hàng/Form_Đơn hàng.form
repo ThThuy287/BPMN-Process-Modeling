@@ -1,0 +1,53 @@
+{
+  "components": [
+    {
+      "label": "Mã khách hàng ",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_08w7dwe",
+        "columns": null
+      },
+      "id": "Field_1yqme4s",
+      "key": "maKH"
+    },
+    {
+      "label": "Tổng tiền đơn hàng ",
+      "type": "number",
+      "layout": {
+        "row": "Row_1czih76",
+        "columns": null
+      },
+      "id": "Field_0mif8wb",
+      "key": "TT"
+    },
+    {
+      "label": "Trạng thái thanh toán ",
+      "values": [
+        {
+          "label": "Đã thanh toán",
+          "value": "value"
+        },
+        {
+          "label": "Chưa thanh toán",
+          "value": "value2"
+        }
+      ],
+      "type": "radio",
+      "layout": {
+        "row": "Row_1yed2iw",
+        "columns": null
+      },
+      "id": "Field_19ldrg2",
+      "key": "TrangThaiThanhToan"
+    }
+  ],
+  "type": "default",
+  "id": "Form_DH",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.44.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "schemaVersion": 19
+}
