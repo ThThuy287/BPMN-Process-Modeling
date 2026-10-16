@@ -12,7 +12,7 @@
 
 ## Mục lục
 
-1. [Tổng quan dự án](https://www.google.com/search?q=%231-t%E1%BB%95ng-quan-d%E1%BB%B1-%C3%A1n)
+1. [Tổng quan dự án](#1-tổng-quan-dự-án)
 2. [Mục tiêu dự án](https://www.google.com/search?q=%232-m%E1%BB%A5c-ti%C3%AAu-d%E1%BB%B1-%C3%A1n)
 3. [Danh sách quy trình toàn hệ thống](https://www.google.com/search?q=%233-danh-s%C3%A1ch-quy-tr%C3%ACnh-to%C3%A0n-h%E1%BB%87-th%E1%BB%91ng)
 4. [Phương pháp phân tích và mô hình hóa](https://www.google.com/search?q=%234-ph%C6%B0%C6%A1ng-ph%C3%A1p-ph%C3%A2n-t%C3%ADch-v%C3%A0-m%C3%B4-h%C3%ACnh-h%C3%B3a)
